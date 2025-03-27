@@ -1,0 +1,12 @@
+.env
+venv/
+
+trial.ipynb
+
+*.pyc
+__pycache__/
+
+
+# OS specific
+.DS_Store
+Thumbs.db
