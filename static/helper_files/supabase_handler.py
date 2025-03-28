@@ -71,7 +71,7 @@ def signup(first_name, last_name, email, password, phone_number, roleid, teamid)
             "username": first_name + " " + last_name,
             "emailid": email,
             "password": password,
-            "phonenumber": phone_number,
+            "mobile": phone_number,
             "roleid": roleid,
             "teamid": teamid,
         }

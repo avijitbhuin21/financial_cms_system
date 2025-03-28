@@ -545,42 +545,6 @@
             opacity: 1;
         }
         
-        /* Success Icon */
-        .success-icon {
-            display: inline-block;
-            position: relative;
-            width: 20px;
-            height: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .success-icon.visible {
-            opacity: 1;
-        }
-        
-        .success-icon:before, .success-icon:after {
-            content: '';
-            position: absolute;
-            background-color: #2d2520;
-        }
-        
-        .success-icon:before {
-            width: 3px;
-            height: 9px;
-            left: 4px;
-            top: 9px;
-            transform: rotate(45deg);
-        }
-        
-        .success-icon:after {
-            width: 3px;
-            height: 15px;
-            right: 5px;
-            top: 5px;
-            transform: rotate(-45deg);
-        }
-        
         /* Form Error Shake Animation */
         @keyframes form-shake {
             0%, 100% { transform: translateX(0); }
@@ -630,6 +594,11 @@
         <!-- Login Form -->
         <div id="login-form">
             <h2 class="form-title">Welcome Back</h2>
+            {% if message %}
+            <div class="error-message" style="color: #f44336; margin-bottom: 15px; background: rgba(244, 67, 54, 0.1); padding: 10px; border-radius: 8px; font-size: 0.9em;">
+                {{ message }}
+            </div>
+            {% endif %}
             <p class="form-subtitle">Login to your account</p>
 
             <form action="/login" method="POST" id="form-login">
@@ -1002,7 +971,7 @@
             }
             
             function handleFormSubmit(e) {
-                // e.preventDefault(); // Allow default form submission
+                e.preventDefault(); // Prevent default form submission
                 
                 // Get the form elements
                 const form = this;
@@ -1039,30 +1008,79 @@
                     return;
                 }
 
-                // The form will now submit normally since e.preventDefault() is commented out.
-                // No need for simulation logic below.
+                // Start loading animation
+                buttonText.textContent = form.id === 'form-login' ? 'Signing In...' : 'Creating Account...';
+                loadingSpinner.classList.add('visible');
+                button.style.paddingRight = '45px';
 
-                // // Start loading animation
-                // buttonText.textContent = form.id === 'form-login' ? 'Signing In...' : 'Creating Account...';
-                // loadingSpinner.classList.add('visible');
-                // button.style.paddingRight = '45px';
-                
-                // // Simulate form processing
-                // setTimeout(() => {
-                //     // Hide loading spinner, show success icon
-                //     loadingSpinner.classList.remove('visible');
-                //     successIcon.classList.add('visible');
-                //     buttonText.textContent = form.id === 'form-login' ? 'Signed In!' : 'Account Created!';
-                //     button.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
-                    
-                //     // Reset after a delay
-                //     setTimeout(() => {
-                //         successIcon.classList.remove('visible');
-                //         buttonText.textContent = originalText;
-                //         button.style.background = '';
-                //         button.style.paddingRight = '';
-                //     }, 2000);
-                // }, 1500);
+                // Get form data
+                const formData = new FormData(form);
+
+                // Send form data using fetch
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === true) {
+                        // Remove any existing error message
+                        const existingError = document.querySelector('.error-message');
+                        if (existingError) {
+                            existingError.remove();
+                        }
+
+                        // Store credentials in localStorage for login form
+                        if (form.id === 'form-login') {
+                            localStorage.setItem('ilnb_uname', formData.get('username'));
+                            localStorage.setItem('ilnb_pwd', formData.get('password'));
+                        }
+                        
+                        // Show success
+                        loadingSpinner.classList.remove('visible');
+                        successIcon.classList.add('visible');
+                        buttonText.textContent = form.id === 'form-login' ? 'Signed In!' : 'Account Created!';
+                        button.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
+                        
+                        // Handle redirect or other success actions
+                        // You may want to redirect to a dashboard or other page here
+                    } else {
+                       // Show error message
+                       loadingSpinner.classList.remove('visible');
+                       buttonText.textContent = originalText;
+                       button.style.paddingRight = '';
+
+                       // Create or update error message div
+                       let errorDiv = document.querySelector('.error-message');
+                       if (!errorDiv) {
+                           errorDiv = document.createElement('div');
+                           errorDiv.className = 'error-message';
+                           errorDiv.style.cssText = 'color: #f44336; margin-bottom: 15px; background: rgba(244, 67, 54, 0.1); padding: 10px; border-radius: 8px; font-size: 0.9em;';
+                           const title = form.closest('div[id$="-form"]').querySelector('.form-title');
+                           title.insertAdjacentElement('afterend', errorDiv);
+                       }
+                       errorDiv.textContent = data.message;
+
+                       // Shake the form to indicate error
+                       form.closest('div[id$="-form"]').classList.add('shake');
+                       setTimeout(() => {
+                           form.closest('div[id$="-form"]').classList.remove('shake');
+                       }, 500);
+                   }
+               })
+               .catch(error => {
+                   console.error('Error:', error);
+                   // Show generic error message
+                   let errorDiv = document.querySelector('.error-message');
+                   if (!errorDiv) {
+                       errorDiv = document.createElement('div');
+                       errorDiv.className = 'error-message';
+                       errorDiv.style.cssText = 'color: #f44336; margin-bottom: 15px; background: rgba(244, 67, 54, 0.1); padding: 10px; border-radius: 8px; font-size: 0.9em;';
+                       const title = form.closest('div[id$="-form"]').querySelector('.form-title');
+                       title.insertAdjacentElement('afterend', errorDiv);
+                   }
+                   errorDiv.textContent = 'An error occurred. Please try again.';
+                });
             }
         }
 

@@ -1,17 +1,18 @@
-from flask import Flask, render_template, request
-
-
+from flask import Flask, render_template, request, session, redirect, url_for
 
 #LOCAL IMPORTS
 from static.helper_files.supabase_handler import login, signup
 
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key-here'
+
 
 @app.route('/')
 def login_page():
     """Renders the login page."""
-    return render_template('login.html')
+    message = session.pop('error_message', None)  # Get and remove message from session
+    return render_template('login.html', message=message)
 
 @app.route('/login', methods=['POST'])
 def handle_login():
@@ -23,6 +24,7 @@ def handle_login():
     if check['status'] == True:
         return {"status": True, "role": check['role'], "team": check['team'], "username": username}
     else:
+        session['error_message'] = "Invalid credentials"
         return {"status": False, "message": "Invalid credentials"}
 
 
