@@ -1,5 +1,11 @@
 from flask import Flask, render_template, request
 
+
+
+#LOCAL IMPORTS
+from static.helper_files.supabase_handler import login, signup
+
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -12,11 +18,13 @@ def handle_login():
     """Handles the login form submission."""
     username = request.form.get('username')
     password = request.form.get('password')
-    print(f"Received login attempt:")
-    print(f"Username/Email: {username}")
-    print(f"Password: {password}")
-    # In a real app, you'd validate credentials here
-    return "Login attempt received (check console)."
+    
+    check = login(username, password)
+    if check['status'] == True:
+        return {"status": True, "role": check['role'], "team": check['team'], "username": username}
+    else:
+        return {"status": False, "message": "Invalid credentials"}
+
 
 @app.route('/signup', methods=['POST'])
 def handle_signup():
@@ -26,17 +34,14 @@ def handle_signup():
     email = request.form.get('email')
     password = request.form.get('password')
     phone_number = request.form.get('phone_number')
-    address = request.form.get('address')
+    roleid = request.form.get('roleid')
+    teamid = request.form.get('teamid')
 
-    print(f"\nReceived signup attempt:")
-    print(f"First Name: {first_name}")
-    print(f"Last Name: {last_name}")
-    print(f"Email: {email}")
-    print(f"Password: {password}")
-    print(f"Phone Number: {phone_number}")
-    print(f"Address: {address}")
-
-    return "Signup attempt received (check console)."
+    status = signup(first_name, last_name, email, password, phone_number, roleid, teamid)
+    if status['status'] == True:
+        return {"status": True}
+    else:
+        return {"status": False, "message": status['message']}
 
 if __name__ == '__main__':
     app.run(debug=True)
