@@ -227,33 +227,33 @@
 
         /* Password strength meter - hide by default */
         .password-strength-meter {
-            height: 5px;
+            display: none;
             width: 100%;
+        }
+
+        .password-strength-meter.visible {
+            display: block;
+            height: 5px;
             background: rgba(255, 255, 255, 0.1);
             margin-top: 8px;
             border-radius: 2px;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
-            display: none;
-        }
-
-        .password-strength-meter.visible {
-            display: block;
+            animation: fadeIn 0.3s ease;
         }
 
         .strength-text {
             display: none;
             font-size: 0.7rem;
-            margin-top: 5px;
             color: rgba(255, 255, 255, 0.7);
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: opacity 0.3s ease;
         }
 
         .strength-text.visible {
             display: inline-block;
+            margin-top: 5px;
+            animation: fadeIn 0.3s ease;
         }
 
         .password-wrapper {
@@ -452,19 +452,28 @@
         
         /* Helper text for validation */
         .helper-text {
+            display: none;
             font-size: 0.75rem;
             text-align: left;
             padding-left: 8px;
-            margin-top: 6px;
             color: rgba(255, 255, 255, 0.7);
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(-5px);
         }
         
         .helper-text.visible {
-            opacity: 1;
-            transform: translateY(0);
+            display: block;
+            margin-top: 6px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .helper-text.error {
@@ -680,7 +689,7 @@
                     </div>
                     <div class="helper-text" id="email-helper"></div>
                 </div>
-                <div class="form-group password-wrapper">
+                <div class="form-group password-wrapper" style="margin-bottom: 0px;" >
                     <div class="input-group">
                         <input type="password" id="signup-password" name="password" class="form-control" placeholder=" " required>
                         <label for="signup-password" class="floating-label">Password</label>
@@ -837,6 +846,7 @@
                     document.querySelector('.moving-bg').style.backgroundImage = "url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1974&q=80')";
                     
                     // Make sure signup form is fully visible with proper styling
+
                     signupForm.style.display = 'block';
                     signupForm.style.opacity = '1';
                     signupForm.style.transform = 'translateY(0)';
@@ -950,26 +960,33 @@
             
             // Email validation (signup form)
             if (signupEmail) {
-                signupEmail.addEventListener('blur', function() {
+                // Validate email in real-time
+                signupEmail.addEventListener('input', function() {
                     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    if (!emailRegex.test(this.value) && this.value.length > 0) {
-                        this.classList.add('invalid');
-                        this.classList.remove('valid');
-                        emailHelper.textContent = 'Please enter a valid email address';
-                        emailHelper.classList.add('error', 'visible');
+                    
+                    if (this.value.length === 0) {
+                        // Empty field
+                        this.classList.remove('valid', 'invalid');
+                        emailHelper.classList.remove('visible', 'error');
                     } else if (emailRegex.test(this.value)) {
+                        // Valid email
                         this.classList.remove('invalid');
                         this.classList.add('valid');
                         emailHelper.textContent = 'Valid email!';
                         emailHelper.classList.remove('error');
                         emailHelper.classList.add('visible');
                     } else {
-                        emailHelper.classList.remove('visible');
+                        // Invalid email
+                        this.classList.remove('valid');
+                        this.classList.add('invalid');
+                        emailHelper.textContent = 'Please enter a valid email address';
+                        emailHelper.classList.add('error', 'visible');
                     }
                 });
-                
+
+                // Clear validation on focus
                 signupEmail.addEventListener('focus', function() {
-                    if (!emailHelper.classList.contains('error')) {
+                    if (this.value.length === 0) {
                         emailHelper.classList.remove('visible');
                     }
                 });
