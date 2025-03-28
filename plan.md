@@ -1,4 +1,4 @@
-**Project: JLNB Group CRM**
+**Project: ilnb Group CRM**
 
 **Technology Stack:**
 
@@ -11,15 +11,15 @@
 
 **`plan.md`**
 
-## Detailed Project Plan: JLNB Group CRM
+## Detailed Project Plan: ilnb Group CRM
 
-This plan outlines the steps to develop the CRM system for JLNB Group using Flask and Supabase, based on the provided documents.
+This plan outlines the steps to develop the CRM system for ilnb Group using Flask and Supabase, based on the provided documents.
 
 **Phase 1: Setup and Foundation (Estimated Time: 1-2 days)**
 
 1.  **Environment Setup:**
     *   Install Python (if not already installed).
-    *   Set up a project directory (`jlnb-crm`).
+    *   Set up a project directory (`ilnb-crm`).
     *   Create and activate a Python virtual environment (e.g., `python -m venv venv`, `source venv/bin/activate` or `venv\Scripts\activate`).
     *   Install necessary Python libraries:
         ```bash
@@ -29,7 +29,7 @@ This plan outlines the steps to develop the CRM system for JLNB Group using Flas
     *   Initialize Git repository: `git init`. Create a `.gitignore` file (for `venv`, `__pycache__`, `.env`, etc.). Make an initial commit.
 
 2.  **Supabase Project Setup:**
-    *   Go to [Supabase.io](https://supabase.io/) and create a new project (e.g., `jlnb-crm`).
+    *   Go to [Supabase.io](https://supabase.io/) and create a new project (e.g., `ilnb-crm`).
     *   Note down your Supabase Project URL and `anon` & `service_role` API keys. Store these securely (we'll use environment variables).
     *   Navigate to the "Table Editor" and "SQL Editor" sections. We will use these to refine the schema.
     *   Explore the "Authentication" section - we might leverage Supabase Auth later.
@@ -38,7 +38,7 @@ This plan outlines the steps to develop the CRM system for JLNB Group using Flas
 3.  **Flask Application Structure:**
     *   Create a basic Flask application structure. A good pattern is using Application Factories and Blueprints:
         ```
-        jlnb-crm/
+        ilnb-crm/
         ├── app/
         │   ├── __init__.py       # Application factory
         │   ├── models.py         # Database interaction logic (optional layer)
@@ -78,14 +78,14 @@ This plan outlines the steps to develop the CRM system for JLNB Group using Flas
 **Phase 2: Database Schema Refinement & Implementation (Estimated Time: 1-2 days)**
 
 1.  **Analyze & Refine Schema:**
-    *   Review the provided schema diagram (`jlnbcrm_*` tables).
+    *   Review the provided schema diagram (`ilnbcrm_*` tables).
     *   **Cross-reference with Notes:** Identify missing tables/fields based on the handwritten notes.
         *   **References:** The `leads` table seems to represent references. Add fields: `ref_obtained_by` (FK to users?), `ref_given_by` (text/varchar), `conversion_rm` (FK to users - maybe same as `leadconverter`?), `mode_of_communication` (enum/varchar: 'call', 'mail', 'whatsapp'), `denial_reason` (text, nullable). Consider if `leadgenerator` is `ref_obtained_by`. `leadconverter` might be the `conversion_rm`. Let's assume `leads` *is* the reference table for now.
-        *   **Client Interactions:** Create a new table `jlnbcrm_interactions`. Columns: `interaction_id` (PK, serial), `client_id` (FK to clients), `user_id` (FK to users - the RM interacting), `interaction_type` (enum/varchar: 'New Business', 'Query Resolution', 'Portfolio Review'), `details` (text), `related_product_id` (FK to products, nullable), `related_query_id` (FK to queries, nullable), `timestamp` (timestamp with timezone).
-        *   **Query Resolution:** Create a new table `jlnbcrm_queries`. Columns: `query_id` (PK, serial), `client_id` (FK to clients), `assigned_rm_id` (FK to users), `query_details` (text), `status` (enum/varchar: 'Open', 'In Progress', 'Resolved', 'Closed'), `resolution_details` (text, nullable), `created_at` (timestamp), `resolved_at` (timestamp, nullable). *Link this to `jlnbcrm_interactions` via `related_query_id`.*
-        *   **Portfolio/Active Products:** The `activeproducts` field in `clients` is not normalized. Create a junction table `jlnbcrm_client_products`. Columns: `client_product_id` (PK), `client_id` (FK to clients), `product_id` (FK to products), `subscription_date` (date/timestamp).
-        *   **Service Requests:** Create a new table `jlnbcrm_service_requests`. Columns: `request_id` (PK, serial), `client_id` (FK to clients), `request_type` (enum/varchar based on list: 'Account Opening', 'Contact Update', etc.), `details` (text), `status` (enum/varchar: 'Pending', 'In Progress', 'Completed', 'Rejected'), `assigned_user_id` (FK to users, nullable), `created_at` (timestamp), `updated_at` (timestamp).
-        *   **Users/Roles/Teams:** The schema seems okay. Ensure `password` will store hashed values. `assignedrm` in `clients` should be a FK to `jlnbcrm_users.userid`. `leadgenerator`, `leadconverter` in `leads` should also be FKs to `jlnbcrm_users.userid`.
+        *   **Client Interactions:** Create a new table `ilnbcrm_interactions`. Columns: `interaction_id` (PK, serial), `client_id` (FK to clients), `user_id` (FK to users - the RM interacting), `interaction_type` (enum/varchar: 'New Business', 'Query Resolution', 'Portfolio Review'), `details` (text), `related_product_id` (FK to products, nullable), `related_query_id` (FK to queries, nullable), `timestamp` (timestamp with timezone).
+        *   **Query Resolution:** Create a new table `ilnbcrm_queries`. Columns: `query_id` (PK, serial), `client_id` (FK to clients), `assigned_rm_id` (FK to users), `query_details` (text), `status` (enum/varchar: 'Open', 'In Progress', 'Resolved', 'Closed'), `resolution_details` (text, nullable), `created_at` (timestamp), `resolved_at` (timestamp, nullable). *Link this to `ilnbcrm_interactions` via `related_query_id`.*
+        *   **Portfolio/Active Products:** The `activeproducts` field in `clients` is not normalized. Create a junction table `ilnbcrm_client_products`. Columns: `client_product_id` (PK), `client_id` (FK to clients), `product_id` (FK to products), `subscription_date` (date/timestamp).
+        *   **Service Requests:** Create a new table `ilnbcrm_service_requests`. Columns: `request_id` (PK, serial), `client_id` (FK to clients), `request_type` (enum/varchar based on list: 'Account Opening', 'Contact Update', etc.), `details` (text), `status` (enum/varchar: 'Pending', 'In Progress', 'Completed', 'Rejected'), `assigned_user_id` (FK to users, nullable), `created_at` (timestamp), `updated_at` (timestamp).
+        *   **Users/Roles/Teams:** The schema seems okay. Ensure `password` will store hashed values. `assignedrm` in `clients` should be a FK to `ilnbcrm_users.userid`. `leadgenerator`, `leadconverter` in `leads` should also be FKs to `ilnbcrm_users.userid`.
         *   **PAN/Acc ID:** `pan` is in `clients` (varchar). Add `account_id` (varchar, nullable) to `clients` as per "Interaction for New Business".
 
 2.  **Implement Schema in Supabase:**
@@ -116,7 +116,7 @@ This plan outlines the steps to develop the CRM system for JLNB Group using Flas
         *   Route for viewing a single lead's details.
         *   Routes/Logic for updating lead status (WIP, Converted, Denied - including reason).
         *   Logic for assigning Conversion RM.
-        *   Logic for handling conversion: Create/Update client record, link product (in `jlnbcrm_client_products`), mark lead as 'Converted'.
+        *   Logic for handling conversion: Create/Update client record, link product (in `ilnbcrm_client_products`), mark lead as 'Converted'.
     *   **Clients (`app/clients/`):**
         *   CRUD routes for managing client details (respecting PAN compulsory, Acc ID optional).
         *   Route to view a client's profile, including their associated interactions, service requests, active products (fetched via joins or separate queries).
@@ -209,3 +209,221 @@ This plan outlines the steps to develop the CRM system for JLNB Group using Flas
 *   **Access Control Details:** Clarify the exact permissions for each role (Level 0, 1, 2) for each module (View, Create, Edit, Delete, Assign).
 *   **Workflow Specifics:** Double-check the exact steps involved in "Lead Conversion" or "Portfolio Review leading to Cross-sell".
 *   **Prioritization:** If time is limited, which modules are most critical to implement first? (Likely References/Leads and Clients).
+
+
+
+## HERE IS THE WHOLE TABLE STRUCTURE IN SUPABASE:
+(AS OF NOW ALL THE USERS HAVE READ AND WRITE PERMISSIONS FOR ALL THE TABLES)
+
+-- 1. Roles Table
+CREATE TABLE IF NOT EXISTS ilnbcrm_roles (
+    roleid SERIAL PRIMARY KEY,
+    rolename VARCHAR(50) NOT NULL UNIQUE,
+    -- Access Level: 0=Admin, 1=Operation/RM Head, 2=ops executive/Junior RM
+    access_level INT NOT NULL UNIQUE CHECK (access_level IN (0, 1, 2)),
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Insert Base Roles based on notes
+INSERT INTO ilnbcrm_roles (rolename, access_level) VALUES
+    ('Admin', 0),
+    ('Operation/RM Head', 1),
+    ('Ops Executive/Junior RM', 2)
+ON CONFLICT (rolename) DO NOTHING; -- Avoid errors if run multiple times
+
+-- 2. Teams Table
+CREATE TABLE IF NOT EXISTS ilnbcrm_teams (
+    teamid SERIAL PRIMARY KEY,
+    teamname VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- 3. Products Table
+CREATE TABLE IF NOT EXISTS ilnbcrm_products (
+    productid SERIAL PRIMARY KEY,
+    prodname VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- 4. Users Table
+CREATE TABLE IF NOT EXISTS ilnbcrm_users (
+    userid SERIAL PRIMARY KEY,
+    -- Supabase Auth uses UUIDs, link it if using Supabase Auth
+    -- auth_user_id UUID UNIQUE REFERENCES auth.users(id) ON DELETE SET NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    full_name VARCHAR(100),
+    emailid VARCHAR(100) NOT NULL UNIQUE,
+    -- Password managed by Supabase Auth or hashed if custom
+    password_hash VARCHAR(255), -- Store hash if not using Supabase Auth
+    mobile VARCHAR(15) UNIQUE,
+    roleid INT NOT NULL,
+    teamid INT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ, -- Manually update or use trigger
+
+    FOREIGN KEY (roleid) REFERENCES ilnbcrm_roles(roleid) ON DELETE RESTRICT, -- Don't delete roles if users exist
+    FOREIGN KEY (teamid) REFERENCES ilnbcrm_teams(teamid) ON DELETE SET NULL -- Allow users to exist if team is deleted
+);
+-- Index for foreign keys often used in queries
+CREATE INDEX IF NOT EXISTS idx_users_roleid ON ilnbcrm_users(roleid);
+CREATE INDEX IF NOT EXISTS idx_users_teamid ON ilnbcrm_users(teamid);
+
+-- Enable RLS for Users table
+ALTER TABLE ilnbcrm_users ENABLE ROW LEVEL SECURITY;
+
+-- 5. Leads Table (Based on References module and schema diagram 'leads')
+CREATE TABLE IF NOT EXISTS ilnbcrm_leads (
+    leadid SERIAL PRIMARY KEY,
+    leadname VARCHAR(100) NOT NULL, -- Name of the potential client
+    ref_given_by VARCHAR(100),      -- Name/source of who gave the reference
+    mode_of_communication VARCHAR(20) CHECK (mode_of_communication IN ('call', 'mail', 'whatsapp', 'in-person', 'other')),
+    leadgenerator INT,            -- User who obtained/entered the reference (FK to users)
+    leadconverter INT NULL,           -- User (RM) assigned for conversion (FK to users)
+    leadstatus VARCHAR(20) NOT NULL DEFAULT 'Pending' CHECK (leadstatus IN ('Pending', 'Work In Progress', 'Converted', 'Denied')),
+    denial_reason TEXT NULL,         -- Reason if status is 'Denied'
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ,         -- Manually update or use trigger
+
+    FOREIGN KEY (leadgenerator) REFERENCES ilnbcrm_users(userid) ON DELETE SET NULL,
+    FOREIGN KEY (leadconverter) REFERENCES ilnbcrm_users(userid) ON DELETE SET NULL
+);
+-- Index for foreign keys and status
+CREATE INDEX IF NOT EXISTS idx_leads_leadgenerator ON ilnbcrm_leads(leadgenerator);
+CREATE INDEX IF NOT EXISTS idx_leads_leadconverter ON ilnbcrm_leads(leadconverter);
+CREATE INDEX IF NOT EXISTS idx_leads_leadstatus ON ilnbcrm_leads(leadstatus);
+
+-- Enable RLS for Leads table
+ALTER TABLE ilnbcrm_leads ENABLE ROW LEVEL SECURITY;
+
+
+-- 6. Clients Table
+CREATE TABLE IF NOT EXISTS ilnbcrm_clients (
+    clientid SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    dob DATE,
+    emailid VARCHAR(100) UNIQUE, -- Can be null initially but maybe required later?
+    mobile VARCHAR(15) UNIQUE,   -- Can be null initially?
+    address TEXT,
+    pan VARCHAR(10) NOT NULL UNIQUE, -- Compulsory & Unique
+    account_id VARCHAR(50) UNIQUE NULL, -- Optional Account ID
+    assignedrm INT NULL,             -- User (RM) assigned to this client (FK to users)
+    leadid INT UNIQUE NULL,          -- Link to the original lead if converted (FK to leads)
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ,          -- Manually update or use trigger
+
+    FOREIGN KEY (assignedrm) REFERENCES ilnbcrm_users(userid) ON DELETE SET NULL,
+    FOREIGN KEY (leadid) REFERENCES ilnbcrm_leads(leadid) ON DELETE SET NULL -- Keep client even if lead deleted? Or RESTRICT? SET NULL seems ok.
+);
+-- Index for foreign keys and commonly searched fields
+CREATE INDEX IF NOT EXISTS idx_clients_assignedrm ON ilnbcrm_clients(assignedrm);
+CREATE INDEX IF NOT EXISTS idx_clients_pan ON ilnbcrm_clients(pan);
+CREATE INDEX IF NOT EXISTS idx_clients_leadid ON ilnbcrm_clients(leadid);
+
+-- Enable RLS for Clients table
+ALTER TABLE ilnbcrm_clients ENABLE ROW LEVEL SECURITY;
+
+
+-- 7. Queries Table (For Query Resolution module)
+CREATE TABLE IF NOT EXISTS ilnbcrm_queries (
+    query_id SERIAL PRIMARY KEY,
+    client_id INT NOT NULL,
+    assigned_rm_id INT NULL, -- User (RM) assigned to handle the query
+    query_details TEXT NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'Open' CHECK (status IN ('Open', 'In Progress', 'Resolved', 'Closed')),
+    resolution_details TEXT NULL,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    resolved_at TIMESTAMPTZ NULL,
+    updated_at TIMESTAMPTZ, -- Manually update or use trigger
+
+    FOREIGN KEY (client_id) REFERENCES ilnbcrm_clients(clientid) ON DELETE CASCADE, -- If client deleted, delete their queries
+    FOREIGN KEY (assigned_rm_id) REFERENCES ilnbcrm_users(userid) ON DELETE SET NULL
+);
+-- Index for foreign keys and status
+CREATE INDEX IF NOT EXISTS idx_queries_client_id ON ilnbcrm_queries(client_id);
+CREATE INDEX IF NOT EXISTS idx_queries_assigned_rm_id ON ilnbcrm_queries(assigned_rm_id);
+CREATE INDEX IF NOT EXISTS idx_queries_status ON ilnbcrm_queries(status);
+
+-- Enable RLS for Queries table
+ALTER TABLE ilnbcrm_queries ENABLE ROW LEVEL SECURITY;
+
+
+-- 8. Interactions Table (Log interactions with clients)
+CREATE TABLE IF NOT EXISTS ilnbcrm_interactions (
+    interaction_id SERIAL PRIMARY KEY,
+    client_id INT NOT NULL,
+    user_id INT NOT NULL, -- User (RM/Staff) who had the interaction
+    interaction_type VARCHAR(50) NOT NULL CHECK (interaction_type IN ('New Business', 'Query Resolution', 'Portfolio Review', 'General Update', 'Other')),
+    details TEXT NOT NULL,
+    related_product_id INT NULL, -- Link to product if relevant (e.g., New Business)
+    related_query_id INT NULL,   -- Link to query if relevant (e.g., Query Resolution interaction)
+    interaction_time TIMESTAMPTZ DEFAULT now(), -- Changed from 'timestamp' to avoid keyword conflict
+
+    FOREIGN KEY (client_id) REFERENCES ilnbcrm_clients(clientid) ON DELETE CASCADE, -- If client deleted, delete their interactions
+    FOREIGN KEY (user_id) REFERENCES ilnbcrm_users(userid) ON DELETE RESTRICT, -- Don't allow deleting user if they logged interactions? Or SET NULL? RESTRICT safer.
+    FOREIGN KEY (related_product_id) REFERENCES ilnbcrm_products(productid) ON DELETE SET NULL,
+    FOREIGN KEY (related_query_id) REFERENCES ilnbcrm_queries(query_id) ON DELETE SET NULL -- If query deleted, just nullify link here
+);
+-- Index for foreign keys and type
+CREATE INDEX IF NOT EXISTS idx_interactions_client_id ON ilnbcrm_interactions(client_id);
+CREATE INDEX IF NOT EXISTS idx_interactions_user_id ON ilnbcrm_interactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_interactions_type ON ilnbcrm_interactions(interaction_type);
+CREATE INDEX IF NOT EXISTS idx_interactions_related_query_id ON ilnbcrm_interactions(related_query_id);
+
+-- Enable RLS for Interactions table
+ALTER TABLE ilnbcrm_interactions ENABLE ROW LEVEL SECURITY;
+
+
+-- 9. Service Requests Table
+CREATE TABLE IF NOT EXISTS ilnbcrm_service_requests (
+    request_id SERIAL PRIMARY KEY,
+    client_id INT NOT NULL,
+    request_type VARCHAR(100) NOT NULL CHECK (request_type IN (
+        'Account Opening', 'Contact Details Updation', 'Account Closure',
+        'Investment Plan Execution', 'Other Query', 'Address Updation',
+        'KYC Updation', 'Bank Updation', 'Nominee Updation'
+    )),
+    details TEXT,
+    status VARCHAR(20) NOT NULL DEFAULT 'Pending' CHECK (status IN ('Pending', 'In Progress', 'Completed', 'Rejected')),
+    assigned_user_id INT NULL, -- User (Ops/RM) assigned to handle request
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ, -- Manually update or use trigger
+    completed_at TIMESTAMPTZ NULL,
+
+    FOREIGN KEY (client_id) REFERENCES ilnbcrm_clients(clientid) ON DELETE CASCADE, -- If client deleted, delete their requests
+    FOREIGN KEY (assigned_user_id) REFERENCES ilnbcrm_users(userid) ON DELETE SET NULL
+);
+-- Index for foreign keys and status/type
+CREATE INDEX IF NOT EXISTS idx_service_requests_client_id ON ilnbcrm_service_requests(client_id);
+CREATE INDEX IF NOT EXISTS idx_service_requests_assigned_user_id ON ilnbcrm_service_requests(assigned_user_id);
+CREATE INDEX IF NOT EXISTS idx_service_requests_status ON ilnbcrm_service_requests(status);
+CREATE INDEX IF NOT EXISTS idx_service_requests_type ON ilnbcrm_service_requests(request_type);
+
+-- Enable RLS for Service Requests table
+ALTER TABLE ilnbcrm_service_requests ENABLE ROW LEVEL SECURITY;
+
+
+-- 10. Client Products Junction Table (Replaces 'activeproducts' field)
+CREATE TABLE IF NOT EXISTS ilnbcrm_client_products (
+    client_product_id SERIAL PRIMARY KEY,
+    client_id INT NOT NULL,
+    product_id INT NOT NULL,
+    subscription_date DATE DEFAULT CURRENT_DATE,
+    notes TEXT,
+    created_at TIMESTAMPTZ DEFAULT now(),
+
+    FOREIGN KEY (client_id) REFERENCES ilnbcrm_clients(clientid) ON DELETE CASCADE, -- If client deleted, delete their product links
+    FOREIGN KEY (product_id) REFERENCES ilnbcrm_products(productid) ON DELETE RESTRICT, -- Don't delete product if clients have it? Or CASCADE? RESTRICT is safer.
+    UNIQUE (client_id, product_id) -- Ensure a client doesn't have the same product twice
+);
+-- Index for foreign keys
+CREATE INDEX IF NOT EXISTS idx_client_products_client_id ON ilnbcrm_client_products(client_id);
+CREATE INDEX IF NOT EXISTS idx_client_products_product_id ON ilnbcrm_client_products(product_id);
+
+-- Enable RLS for Client Products table
+ALTER TABLE ilnbcrm_client_products ENABLE ROW LEVEL SECURITY;
+
+-- Confirmation message (optional, won't show in Supabase UI but useful in psql)
+-- SELECT 'ilnb CRM tables created successfully.';

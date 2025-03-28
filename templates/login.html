@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegant Login & Signup</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #f7c5ae;
+            --primary-dark: #e9a992;
+            --primary-light: #ffd7c7;
+            --text-color: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --bg-dark: rgba(17, 25, 40, 0.7);
+            --transition-quick: 0.3s;
+            --transition-medium: 0.5s;
+            --transition-slow: 0.8s;
+            --input-bg: rgba(255, 255, 255, 0.08);
+            --input-bg-focus: rgba(255, 255, 255, 0.15);
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f1729, #1a1b2f);
+            background-size: 400% 400%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-color);
+            position: relative;
+            min-height: 100vh;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .background-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .moving-bg {
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            top: -10%;
+            left: -10%;
+            background-image: url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.6) saturate(1.2);
+            z-index: -1;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+            transition: background-image 1s ease-in-out;
+        }
+
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(10,10,20,0.7), rgba(10,10,20,0.5));
+            z-index: -1;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            pointer-events: none;
+        }
+
+        .form-container {
+            position: relative;
+            z-index: 2;
+            max-width: 40%;
+            width: 90%;
+            padding: 40px 35px;
+            text-align: center;
+            background: rgba(17, 25, 40, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.125);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+                        0 5px 10px rgba(255, 255, 255, 0.05) inset;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        
+        .form-container:hover {
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6),
+                        0 0 0 1px rgba(255, 255, 255, 0.07) inset,
+                        0 5px 10px rgba(255, 255, 255, 0.07) inset;
+            transform: translateY(-5px) scale(1.01);
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(
+                circle at top right,
+                rgba(255, 255, 255, 0.12),
+                transparent 60%
+            );
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .form-title {
+            font-size: 2.2em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            display: inline-block;
+        }
+
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        .form-container:hover .form-title::after {
+            width: 60px;
+        }
+
+        .form-subtitle {
+            font-size: 1em;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 12px;
+            background-color: var(--input-bg);
+            color: #fff;
+            outline: none;
+            transition: all var(--transition-quick) cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Poppins', sans-serif;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-control:focus {
+            background-color: var(--input-bg-focus);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.25), 0 4px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-control:focus::placeholder {
+            opacity: 0.7;
+        }
+
+        select.form-control {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(255, 255, 255, 0.7)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 40px;
+            color: var(--text-color);
+        }
+
+        select.form-control option {
+            background-color: #1a1b2f;
+            color: var(--text-color);
+        }
+
+        select.form-control:focus {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(255, 255, 255, 0.9)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+
+        /* Password strength meter - hide by default */
+        .password-strength-meter {
+            height: 5px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 8px;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .password-strength-meter.visible {
+            display: block;
+        }
+
+        .strength-text {
+            display: none;
+            font-size: 0.7rem;
+            margin-top: 5px;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: opacity 0.3s ease;
+        }
+
+        .strength-text.visible {
+            display: inline-block;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-icon {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            z-index: 3;
+            transition: all 0.3s ease;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .password-icon:hover {
+            color: rgba(255, 255, 255, 1);
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #2d2520;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 15px rgba(247, 197, 174, 0.3), 0 -2px 6px rgba(255, 255, 255, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            box-shadow: 0 8px 20px rgba(247, 197, 174, 0.4), 0 -2px 6px rgba(255, 255, 255, 0.15) inset;
+            transform: translateY(-3px);
+            letter-spacing: 1.5px;
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(247, 197, 174, 0.3), 0 -2px 6px rgba(255, 255, 255, 0.1) inset;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            top: 0;
+            left: -100%;
+            z-index: -1;
+            transition: 0.6s;
+            transform: skewX(-15deg);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: ripple 0.8s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 22px;
+            font-size: 0.9em;
+            padding: 0 5px;
+        }
+
+        .remember-me label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.9);
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        .remember-me label:hover {
+            color: #fff;
+        }
+
+        .remember-me input[type="checkbox"] {
+             margin-right: 10px;
+             appearance: none;
+             width: 18px;
+             height: 18px;
+             border: 2px solid rgba(255, 255, 255, 0.5);
+             border-radius: 4px;
+             position: relative;
+             cursor: pointer;
+             vertical-align: middle;
+             background-color: rgba(255,255,255,0.05);
+             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .remember-me input[type="checkbox"]:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.7);
+            transform: scale(1.05);
+        }
+        
+        .remember-me input[type="checkbox"]:checked {
+             background-color: var(--primary-color);
+             border-color: var(--primary-color);
+        }
+        
+        .remember-me input[type="checkbox"]:checked::after {
+            content: '\2713';
+            font-size: 13px;
+            color: #2d2520;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+
+        .forgot-password a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 2px 4px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .forgot-password a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .forgot-password a:hover::after {
+            width: 100%;
+        }
+
+        .toggle-form {
+            margin-top: 40px;
+            font-size: 0.95em;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .toggle-form a {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 2px 5px;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-form a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .toggle-form a:hover {
+            color: var(--primary-light);
+            background-color: rgba(247, 197, 174, 0.1);
+        }
+
+        .toggle-form a:hover::after {
+            width: 100%;
+        }
+        
+        /* Form transition animations - Fixed */
+        .form-fade-out {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .form-fade-in {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        #signup-form, #login-form {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #signup-form.form-fade-in, #login-form.form-fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Fix for selects to ensure text is visible */
+        select.form-control {
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Ensure option text is visible in dropdowns */
+        select.form-control option {
+            background-color: #1a1b2f;
+            color: white;
+            padding: 10px;
+        }
+        
+        /* Hidden initially */
+        #signup-form {
+            display: none;
+        }
+        
+        /* For signup specific form groups */
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-group.half {
+            flex: 1;
+        }
+        
+        /* Success indicators for form fields */
+        .form-control.valid {
+            border-color: rgba(95, 210, 130, 0.5);
+            background-color: rgba(95, 210, 130, 0.05);
+            box-shadow: 0 0 0 2px rgba(95, 210, 130, 0.2);
+        }
+        
+        /* Error indicators for form fields */
+        .form-control.invalid {
+            border-color: rgba(210, 95, 95, 0.5);
+            background-color: rgba(210, 95, 95, 0.05);
+            box-shadow: 0 0 0 2px rgba(210, 95, 95, 0.2);
+        }
+        
+        /* Helper text for validation */
+        .helper-text {
+            font-size: 0.75rem;
+            text-align: left;
+            padding-left: 8px;
+            margin-top: 6px;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+        
+        .helper-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .helper-text.error {
+            color: rgba(255, 120, 120, 0.9);
+        }
+        
+        /* Progress meter for password strength */
+        .password-strength-meter {
+            height: 5px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 8px;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .password-strength-meter:hover {
+            height: 7px;
+        }
+        
+        .password-strength-meter .strength {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to right, #f44336, #FFA726, #4CAF50);
+            transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 2px;
+        }
+        
+        .strength-text {
+            display: inline-block;
+            font-size: 0.7rem;
+            margin-top: 5px;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .strength-text.visible {
+            opacity: 1;
+        }
+        
+        /* Loading animation for button */
+        @keyframes loading-rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: loading-rotation 1s ease-in-out infinite;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .loading-spinner.visible {
+            opacity: 1;
+        }
+        
+        /* Success Icon */
+        .success-icon {
+            display: inline-block;
+            position: relative;
+            width: 20px;
+            height: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .success-icon.visible {
+            opacity: 1;
+        }
+        
+        .success-icon:before, .success-icon:after {
+            content: '';
+            position: absolute;
+            background-color: #2d2520;
+        }
+        
+        .success-icon:before {
+            width: 3px;
+            height: 9px;
+            left: 4px;
+            top: 9px;
+            transform: rotate(45deg);
+        }
+        
+        .success-icon:after {
+            width: 3px;
+            height: 15px;
+            right: 5px;
+            top: 5px;
+            transform: rotate(-45deg);
+        }
+        
+        /* Form Error Shake Animation */
+        @keyframes form-shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .shake {
+            animation: form-shake 0.5s ease-in-out;
+        }
+        
+        /* Custom floating placeholder animation */
+        .input-group {
+            position: relative;
+        }
+        
+        .floating-label {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus ~ .floating-label,
+        .form-control:not(:placeholder-shown) ~ .floating-label {
+            top: 0;
+            left: 15px;
+            font-size: 0.75rem;
+            background-color: var(--bg-dark);
+            padding: 0 5px;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper">
+        <div class="moving-bg"></div>
+        <div class="background-overlay"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <div class="form-container">
+        <!-- Login Form -->
+        <div id="login-form">
+            <h2 class="form-title">Welcome Back</h2>
+            <p class="form-subtitle">Login to your account</p>
+
+            <form action="/login" method="POST" id="form-login">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="login-username" name="username" placeholder=" " required>
+                        <label for="login-username" class="floating-label">Username or Email</label>
+                    </div>
+                    <div class="helper-text" id="username-helper"></div>
+                </div>
+                <div class="form-group password-wrapper">
+                    <div class="input-group">
+                        <input type="password" id="login-password" name="password" class="form-control" placeholder=" " required>
+                        <label for="login-password" class="floating-label">Password</label>
+                        <span class="password-icon"><i class="fas fa-eye"></i></span>
+                    </div>
+                    <div class="helper-text" id="password-helper"></div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-primary">
+                        <span>Sign In</span>
+                        <div class="loading-spinner"></div>
+                        <div class="success-icon"></div>
+                    </button>
+                </div>
+                <div class="form-options">
+                    <div class="remember-me">
+                        <label>
+                            <input type="checkbox" name="remember"> Remember Me
+                        </label>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                </div>
+            </form>
+
+            <div class="toggle-form">
+                Don't have an account? <a id="show-signup">Sign Up</a>
+            </div>
+        </div>
+
+        <!-- Sign-up Form (initially hidden) -->
+        <div id="signup-form">
+            <h2 class="form-title">Create Account</h2>
+            <p class="form-subtitle">Join us today</p>
+
+            <form action="/signup" method="POST" id="form-signup">
+                <div class="form-row">
+                    <div class="form-group half">
+                        <div class="input-group">
+                            <input type="text" id="first-name" name="first_name" class="form-control" placeholder=" " required>
+                            <label for="first-name" class="floating-label">First Name</label>
+                        </div>
+                    </div>
+                    <div class="form-group half">
+                        <div class="input-group">
+                            <input type="text" id="last-name" name="last_name" class="form-control" placeholder=" " required>
+                            <label for="last-name" class="floating-label">Last Name</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="email" id="signup-email" name="email" class="form-control" placeholder=" " required>
+                        <label for="signup-email" class="floating-label">Email Address</label>
+                    </div>
+                    <div class="helper-text" id="email-helper"></div>
+                </div>
+                <div class="form-group password-wrapper">
+                    <div class="input-group">
+                        <input type="password" id="signup-password" name="password" class="form-control" placeholder=" " required>
+                        <label for="signup-password" class="floating-label">Password</label>
+                        <span class="password-icon"><i class="fas fa-eye"></i></span>
+                    </div>
+                    <div class="password-strength-meter">
+                        <div class="strength" id="password-strength"></div>
+                    </div>
+                    <span class="strength-text" id="strength-text"></span>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="tel" id="phone-number" name="phone_number" class="form-control" placeholder=" " required>
+                        <label for="phone-number" class="floating-label">Phone Number</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group half">
+                        <div class="input-group">
+                            <select id="role" name="role" class="form-control" required>
+                                <option value="" disabled selected>Select Role</option>
+                                <option value="OPERATION / RM HEAD">OPERATION / RM HEAD</option>
+                                <option value="OPS EXECUTIVE / JUNIOR RM">OPS EXECUTIVE / JUNIOR RM</option>
+                            </select>
+                            <!-- No floating label needed for select, but keep structure -->
+                        </div>
+                    </div>
+                    <div class="form-group half">
+                        <div class="input-group">
+                            <select id="team" name="team" class="form-control" required>
+                                <option value="" disabled selected>Select Team</option>
+                                <option value="team1">Team 1</option>
+                                <option value="team2">Team 2</option>
+                                <option value="team3">Team 3</option>
+                            </select>
+                             <!-- No floating label needed for select, but keep structure -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <button type="submit" class="btn-primary">
+                        <span>Create Account</span>
+                        <div class="loading-spinner"></div>
+                        <div class="success-icon"></div>
+                    </button>
+                </div>
+            </form>
+
+            <div class="toggle-form" style="margin-top: 15px;"> <!-- Reduced margin-top -->
+                Already have an account? <a id="show-login">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create background particles
+            createParticles();
+            
+            // Add mouse movement parallax effect
+            addParallaxEffect();
+            
+            // Toggle password visibility
+            initPasswordToggles();
+            
+            // Form toggling functionality
+            initFormToggling();
+            
+            // Form validation and interactive effects
+            initFormValidation();
+            
+            // Password strength meter
+            initPasswordStrengthMeter();
+            
+            // Button effects
+            initButtonEffects();
+        });
+
+        // Flag to prevent multiple form transitions
+        let isTransitioning = false;
+
+        // Create particles in the background
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20; // Reduced number of particles
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 2px and 5px
+                const size = Math.random() * 3 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random opacity
+                particle.style.opacity = Math.random() * 0.4 + 0.1;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Add parallax effect on mouse movement
+        function addParallaxEffect() {
+            const movingBg = document.querySelector('.moving-bg');
+            const formContainer = document.querySelector('.form-container');
+            let ticking = false;
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const mouseX = e.clientX / window.innerWidth;
+                        const mouseY = e.clientY / window.innerHeight;
+                        
+                        const moveX = 10 * (mouseX - 0.5); // Reduced movement
+                        const moveY = 10 * (mouseY - 0.5); // Reduced movement
+                        
+                        movingBg.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+                        formContainer.style.transform = `translate(${moveX * -0.1}px, ${moveY * -0.1}px) scale(1)`;
+                        
+                        ticking = false;
+                    });
+                    
+                    ticking = true;
+                }
+            });
+        }
+
+        // Toggle password visibility
+        function initPasswordToggles() {
+            const passwordToggles = document.querySelectorAll('.password-icon');
+            
+            passwordToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const passwordField = this.parentElement.querySelector('input');
+                    const icon = this.querySelector('i');
+                    
+                    if (passwordField.type === 'password') {
+                        passwordField.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        passwordField.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
+        }
+
+        // Form toggling functionality - Fixed
+        function initFormToggling() {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const showSignup = document.getElementById('show-signup');
+            const showLogin = document.getElementById('show-login');
+            
+            showSignup.addEventListener('click', function() {
+                if (isTransitioning) return; // Prevent multiple clicks
+                isTransitioning = true;
+                
+                // Fade out login form
+                loginForm.classList.add('form-fade-out');
+                
+                setTimeout(() => {
+                    loginForm.style.display = 'none';
+                    
+                    // Reset login form
+                    document.getElementById('form-login').reset();
+                    const loginHelpers = loginForm.querySelectorAll('.helper-text');
+                    loginHelpers.forEach(helper => {
+                        helper.textContent = '';
+                        helper.classList.remove('visible', 'error');
+                    });
+                    
+                    // Change background image
+                    document.querySelector('.moving-bg').style.backgroundImage = "url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1974&q=80')";
+                    
+                    // Make sure signup form is fully visible with proper styling
+                    signupForm.style.display = 'block';
+                    signupForm.style.opacity = '1';
+                    signupForm.style.transform = 'translateY(0)';
+                    signupForm.classList.remove('form-fade-out');
+                    
+                    // Force a reflow to ensure styles are applied
+                    void signupForm.offsetWidth;
+                    
+                    // Add visible class
+                    signupForm.classList.add('form-fade-in');
+                    
+                    // Re-initialize parallax effect to ensure it works with the new background
+                    setTimeout(() => {
+                        // Reset any transform on moving background
+                        const movingBg = document.querySelector('.moving-bg');
+                        movingBg.style.transform = 'translate3d(0, 0, 0)';
+                        
+                        isTransitioning = false;
+                    }, 300);
+                }, 300);
+            });
+            
+            showLogin.addEventListener('click', function() {
+                if (isTransitioning) return; // Prevent multiple clicks
+                isTransitioning = true;
+                
+                // Fade out signup form
+                signupForm.classList.remove('form-fade-in');
+                signupForm.classList.add('form-fade-out');
+                
+                setTimeout(() => {
+                    signupForm.style.display = 'none';
+                    
+                    // Reset signup form
+                    document.getElementById('form-signup').reset();
+                    document.getElementById('password-strength').style.width = '0';
+                    document.querySelector('.password-strength-meter').classList.remove('visible');
+                    document.getElementById('strength-text').classList.remove('visible');
+                    document.getElementById('strength-text').textContent = '';
+                    const signupHelpers = signupForm.querySelectorAll('.helper-text');
+                    signupHelpers.forEach(helper => {
+                        helper.textContent = '';
+                        helper.classList.remove('visible', 'error');
+                    });
+                    
+                    // Change background image
+                    document.querySelector('.moving-bg').style.backgroundImage = "url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1974&q=80')";
+                    
+                    // Make sure login form is fully visible with proper styling
+                    loginForm.style.display = 'block';
+                    loginForm.style.opacity = '1';
+                    loginForm.style.transform = 'translateY(0)';
+                    loginForm.classList.remove('form-fade-out');
+                    
+                    // Force a reflow to ensure styles are applied
+                    void loginForm.offsetWidth;
+                    
+                    // Add visible class
+                    loginForm.classList.add('form-fade-in');
+                    
+                    // Re-initialize parallax effect to ensure it works with the new background
+                    setTimeout(() => {
+                        // Reset any transform on moving background
+                        const movingBg = document.querySelector('.moving-bg');
+                        movingBg.style.transform = 'translate3d(0, 0, 0)';
+                        
+                        isTransitioning = false;
+                    }, 300);
+                }, 300);
+            });
+        }
+
+        // Form validation and interactive effects
+        function initFormValidation() {
+            const loginForm = document.getElementById('form-login');
+            const signupForm = document.getElementById('form-signup');
+            const loginUsername = document.getElementById('login-username');
+            const loginPassword = document.getElementById('login-password');
+            const signupEmail = document.getElementById('signup-email');
+            
+            // Helper text elements
+            const usernameHelper = document.getElementById('username-helper');
+            const passwordHelper = document.getElementById('password-helper');
+            const emailHelper = document.getElementById('email-helper');
+            
+            // Username validation (login form)
+            if (loginUsername) {
+                loginUsername.addEventListener('blur', function() {
+                    if (this.value.length < 4 && this.value.length > 0) {
+                        this.classList.add('invalid');
+                        this.classList.remove('valid');
+                        usernameHelper.textContent = 'Username must be at least 4 characters';
+                        usernameHelper.classList.add('error', 'visible');
+                    } else if (this.value.length >= 4) {
+                        this.classList.remove('invalid');
+                        this.classList.add('valid');
+                        usernameHelper.textContent = 'Looks good!';
+                        usernameHelper.classList.remove('error');
+                        usernameHelper.classList.add('visible');
+                    } else {
+                        usernameHelper.classList.remove('visible');
+                    }
+                });
+                
+                loginUsername.addEventListener('focus', function() {
+                    if (!usernameHelper.classList.contains('error')) {
+                        usernameHelper.classList.remove('visible');
+                    }
+                });
+            }
+            
+            // Email validation (signup form)
+            if (signupEmail) {
+                signupEmail.addEventListener('blur', function() {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(this.value) && this.value.length > 0) {
+                        this.classList.add('invalid');
+                        this.classList.remove('valid');
+                        emailHelper.textContent = 'Please enter a valid email address';
+                        emailHelper.classList.add('error', 'visible');
+                    } else if (emailRegex.test(this.value)) {
+                        this.classList.remove('invalid');
+                        this.classList.add('valid');
+                        emailHelper.textContent = 'Valid email!';
+                        emailHelper.classList.remove('error');
+                        emailHelper.classList.add('visible');
+                    } else {
+                        emailHelper.classList.remove('visible');
+                    }
+                });
+                
+                signupEmail.addEventListener('focus', function() {
+                    if (!emailHelper.classList.contains('error')) {
+                        emailHelper.classList.remove('visible');
+                    }
+                });
+            }
+            
+            // Form submission with animations
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleFormSubmit);
+            }
+            
+            if (signupForm) {
+                signupForm.addEventListener('submit', handleFormSubmit);
+            }
+            
+            function handleFormSubmit(e) {
+                // e.preventDefault(); // Allow default form submission
+                
+                // Get the form elements
+                const form = this;
+                const button = form.querySelector('.btn-primary');
+                const buttonText = button.querySelector('span');
+                const loadingSpinner = button.querySelector('.loading-spinner');
+                const successIcon = button.querySelector('.success-icon');
+                const originalText = buttonText.textContent;
+                
+                // Check all required fields
+                let hasError = false;
+                const requiredFields = form.querySelectorAll('[required]');
+                
+                requiredFields.forEach(field => {
+                    if (!field.value) {
+                        field.classList.add('invalid');
+                        hasError = true;
+                        
+                        // Show error message
+                        const helperEl = field.closest('.form-group').querySelector('.helper-text');
+                        if (helperEl) {
+                            helperEl.textContent = 'This field is required';
+                            helperEl.classList.add('error', 'visible');
+                        }
+                    }
+                });
+                
+                if (hasError) {
+                    // Shake the form to indicate error
+                    form.closest('div[id$="-form"]').classList.add('shake');
+                    setTimeout(() => {
+                        form.closest('div[id$="-form"]').classList.remove('shake');
+                    }, 500);
+                    return;
+                }
+
+                // The form will now submit normally since e.preventDefault() is commented out.
+                // No need for simulation logic below.
+
+                // // Start loading animation
+                // buttonText.textContent = form.id === 'form-login' ? 'Signing In...' : 'Creating Account...';
+                // loadingSpinner.classList.add('visible');
+                // button.style.paddingRight = '45px';
+                
+                // // Simulate form processing
+                // setTimeout(() => {
+                //     // Hide loading spinner, show success icon
+                //     loadingSpinner.classList.remove('visible');
+                //     successIcon.classList.add('visible');
+                //     buttonText.textContent = form.id === 'form-login' ? 'Signed In!' : 'Account Created!';
+                //     button.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
+                    
+                //     // Reset after a delay
+                //     setTimeout(() => {
+                //         successIcon.classList.remove('visible');
+                //         buttonText.textContent = originalText;
+                //         button.style.background = '';
+                //         button.style.paddingRight = '';
+                //     }, 2000);
+                // }, 1500);
+            }
+        }
+
+        // Password strength meter
+        function initPasswordStrengthMeter() {
+            const signupPassword = document.getElementById('signup-password');
+            const strengthMeter = document.getElementById('password-strength');
+            const strengthMeterContainer = document.querySelector('.password-strength-meter');
+            const strengthText = document.getElementById('strength-text');
+            
+            if (signupPassword && strengthMeter) {
+                signupPassword.addEventListener('input', function() {
+                    const val = this.value;
+                    let strength = 0;
+                    let strengthLabel = '';
+                    
+                    // Show or hide strength meter based on password presence
+                    if (val.length > 0) {
+                        strengthMeterContainer.classList.add('visible');
+                        
+                        // Calculate password strength
+                        if (val.length >= 8) strength += 20;
+                        if (val.match(/[a-z]+/)) strength += 20;
+                        if (val.match(/[A-Z]+/)) strength += 20;
+                        if (val.match(/[0-9]+/)) strength += 20;
+                        if (val.match(/[^a-zA-Z0-9]+/)) strength += 20;
+                        
+                        // Set strength meter width
+                        strengthMeter.style.width = strength + '%';
+                        
+                        // Determine strength label and color
+                        if (strength < 40) {
+                            strengthLabel = 'WEAK';
+                            strengthMeter.style.background = '#f44336';
+                        } else if (strength < 80) {
+                            strengthLabel = 'MEDIUM';
+                            strengthMeter.style.background = '#FFA726';
+                        } else {
+                            strengthLabel = 'STRONG';
+                            strengthMeter.style.background = '#4CAF50';
+                        }
+                        
+                        // Show strength text
+                        strengthText.textContent = strengthLabel;
+                        strengthText.classList.add('visible');
+                    } else {
+                        // Hide strength meter and text when no password
+                        strengthMeterContainer.classList.remove('visible');
+                        strengthText.classList.remove('visible');
+                    }
+                });
+                
+                // Reset strength meter when form is reset
+                document.getElementById('form-signup').addEventListener('reset', function() {
+                    strengthMeterContainer.classList.remove('visible');
+                    strengthText.classList.remove('visible');
+                });
+            }
+        }
+
+        // Button effects including ripple
+        function initButtonEffects() {
+            const buttons = document.querySelectorAll('.btn-primary');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    
+                    this.appendChild(ripple);
+                    
+                    // Remove old ripples before adding new ones
+                    const ripples = this.getElementsByClassName('ripple');
+                    if (ripples.length > 3) {
+                        this.removeChild(ripples[0]);
+                    }
+                    
+                    setTimeout(() => {
+                        if (ripple.parentNode === this) {
+                            this.removeChild(ripple);
+                        }
+                    }, 800);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
