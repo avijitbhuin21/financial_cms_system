@@ -87,33 +87,6 @@
             transition: background-image 1s ease-in-out;
         }
 
-        .background-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(10,10,20,0.7), rgba(10,10,20,0.5));
-            z-index: -1;
-        }
-
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            pointer-events: none;
-        }
-
         .form-container {
             position: relative;
             z-index: 2;
@@ -224,7 +197,6 @@
 
         .form-control:focus {
             background-color: var(--input-bg-focus);
-            border-color: rgba(255, 255, 255, 0.3);
             box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.25), 0 4px 10px rgba(0, 0, 0, 0.2);
             transform: translateY(-2px);
         }
@@ -373,93 +345,6 @@
                 transform: scale(2.5);
                 opacity: 0;
             }
-        }
-
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 22px;
-            font-size: 0.9em;
-            padding: 0 5px;
-        }
-
-        .remember-me label {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            color: rgba(255, 255, 255, 0.9);
-            user-select: none;
-            transition: color 0.3s ease;
-        }
-
-        .remember-me label:hover {
-            color: #fff;
-        }
-
-        .remember-me input[type="checkbox"] {
-             margin-right: 10px;
-             appearance: none;
-             width: 18px;
-             height: 18px;
-             border: 2px solid rgba(255, 255, 255, 0.5);
-             border-radius: 4px;
-             position: relative;
-             cursor: pointer;
-             vertical-align: middle;
-             background-color: rgba(255,255,255,0.05);
-             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .remember-me input[type="checkbox"]:hover {
-            background-color: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.7);
-            transform: scale(1.05);
-        }
-        
-        .remember-me input[type="checkbox"]:checked {
-             background-color: var(--primary-color);
-             border-color: var(--primary-color);
-        }
-        
-        .remember-me input[type="checkbox"]:checked::after {
-            content: '\2713';
-            font-size: 13px;
-            color: #2d2520;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-        }
-
-        .forgot-password a {
-            color: rgba(255, 255, 255, 0.9);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            padding: 2px 4px;
-            border-radius: 4px;
-            position: relative;
-        }
-
-        .forgot-password a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-
-        .forgot-password a:hover {
-            color: #fff;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .forgot-password a:hover::after {
-            width: 100%;
         }
 
         .toggle-form {
@@ -761,16 +646,6 @@
                         <div class="success-icon"></div>
                     </button>
                 </div>
-                <div class="form-options">
-                    <div class="remember-me">
-                        <label>
-                            <input type="checkbox" name="remember"> Remember Me
-                        </label>
-                    </div>
-                    <div class="forgot-password">
-                        <a href="#">Forgot Password?</a>
-                    </div>
-                </div>
             </form>
 
             <div class="toggle-form">
@@ -862,8 +737,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Create background particles
-            createParticles();
             
             // Add mouse movement parallax effect
             addParallaxEffect();
@@ -886,31 +759,6 @@
 
         // Flag to prevent multiple form transitions
         let isTransitioning = false;
-
-        // Create particles in the background
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 20; // Reduced number of particles
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Random size between 2px and 5px
-                const size = Math.random() * 3 + 2;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                // Random position
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100}%`;
-                
-                // Random opacity
-                particle.style.opacity = Math.random() * 0.4 + 0.1;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
 
         // Add parallax effect on mouse movement
         function addParallaxEffect() {
