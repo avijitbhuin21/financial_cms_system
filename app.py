@@ -42,19 +42,31 @@ def handle_login():
 
 @app.route('/signup', methods=['POST'])
 def handle_signup():
-    first_name = request.form.get('first_name')
-    last_name = request.form.get('last_name')
-    email = request.form.get('email')
-    password = request.form.get('password')
-    phone_number = request.form.get('phone_number')
-    roleid = request.form.get('role')
-    teamid = request.form.get('team')
+    try:
+        data = request.get_json()
+        print(data)
+        if not data:
+            return jsonify({"status": False, "message": "No data provided"})
 
-    status = signup(first_name, last_name, email, password, phone_number, roleid, teamid)
-    if status['status'] == True:
-        return {"status": True}
-    else:
-        return {"status": False, "message": status['message']}
+        required_fields = ['first_name', 'last_name', 'email', 'password', 'phone_number', 'role', 'team']
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return jsonify({"status": False, "message": f"Missing required field: {field}"})
+
+        status = signup(
+            data['first_name'],
+            data['last_name'],
+            data['email'],
+            data['password'],
+            data['phone_number'],
+            data['role'],
+            data['team']
+        )
+
+        return jsonify(status)
+    except Exception as e:
+        print(f"Error in handle_signup: {str(e)}")
+        return jsonify({"status": False, "message": "Server error processing request"})
 
 @app.route('/logout')
 def logout():

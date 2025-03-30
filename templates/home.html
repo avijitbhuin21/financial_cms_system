@@ -703,6 +703,7 @@
             opacity: 0.5;
             transition: all 0.3s;
             cursor: pointer; /* Add pointer cursor */
+            margin-right: 10px; /* Adjust spacing */
         }
 
         .form-control:focus + .input-icon {
@@ -802,6 +803,40 @@
         /* Set text color scheme for the input to hint browser for dark mode picker */
         .modal input[type="date"].form-control {
             color-scheme: dark;
+        }
+
+        /* Select element styling */
+        .modal select.form-control {
+            background-color: rgba(25, 35, 60, 0.95);
+            color: var(--text-color);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+            padding-right: 35px; /* Space for custom arrow */
+        }
+
+        .modal select.form-control option {
+            background-color: rgba(25, 35, 60, 0.95);
+            color: var(--text-color);
+            padding: 12px;
+        }
+
+        /* Custom arrow for select */
+        .modal .input-wrapper {
+            position: relative;
+        }
+
+        .modal .input-wrapper .input-icon {
+            pointer-events: none; /* Ensure icon doesn't interfere with select clicks */
+        }
+
+        /* Style for select focus state */
+        .modal select.form-control:focus {
+            background-color: rgba(25, 35, 60, 0.95);
+            border-color: rgba(247, 197, 174, 0.4);
+            box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.15),
+                        0 4px 8px rgba(0, 0, 0, 0.1) inset;
         }
 
         /* Keyframes for form element animation */
@@ -930,6 +965,22 @@
                     </div>
                 </div>
 
+                <!-- Card 4: Add User -->
+                <div class="card" id="add-users-card"> <!-- Changed ID to add-users-card -->
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <i class="fas fa-user-plus"></i> <!-- Re-using icon, change if needed -->
+                        </div>
+                        <h3 class="card-title">Add User</h3>
+                        <p class="card-description">Add a new user account with appropriate roles and teams.</p>
+                        <div class="card-action">
+                            <span>Add New</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+        </div> <!-- Closing cards-grid -->
+
         <!-- Add Client Modal -->
         <div class="modal" id="add-client-modal">
             <div class="modal-backdrop"></div>
@@ -1003,7 +1054,7 @@
                             <div class="form-group half">
                                 <label for="client-rm">Assigned RM</label>
                                 <div class="input-wrapper">
-                                    <input type="text" id="client-rm" name="assignedrm" class="form-control" value="{{ username }}" readonly>
+                                    <input type="text" id="client-rm" name="assignedrm" class="form-control">
                                     <i class="input-icon fas fa-user-tie"></i>
                                 </div>
                             </div>
@@ -1137,11 +1188,131 @@
                 </div>
             </div>
         </div>
+        <!-- Add User Modal -->
+        <div class="modal" id="add-user-modal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Add New User</h3>
+                    <!-- Close button removed -->
+                </div>
+                <div class="modal-body">
+                    <form id="add-user-form"> <!-- Removed action and method to let JavaScript handle submission -->
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label for="user-first-name">First Name <span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <input type="text" id="user-first-name" name="first_name" class="form-control" required>
+                                    <i class="input-icon fas fa-user"></i>
+                                </div>
+                            </div>
+                            <div class="form-group half">
+                                <label for="user-last-name">Last Name <span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <input type="text" id="user-last-name" name="last_name" class="form-control" required>
+                                    <i class="input-icon fas fa-user"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="user-email">Email Address <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <input type="email" id="user-email" name="email" class="form-control" required>
+                                <i class="input-icon fas fa-envelope"></i>
+                            </div>
+                            <!-- Removed helper-text -->
+                        </div>
+
+                        <div class="form-group"> <!-- Removed password-wrapper -->
+                            <label for="user-password">Password <span class="required">*</span></label>
+                            <div class="input-wrapper"> <!-- Added input-wrapper -->
+                                <input type="password" id="user-password" name="password" class="form-control" required>
+                                <i class="input-icon fas fa-lock"></i> <!-- Changed icon -->
+                                <!-- Removed password toggle icon span -->
+                            </div>
+                            <!-- Removed password strength meter and text -->
+                        </div>
+
+                        <div class="form-group">
+                            <label for="user-phone-number">Phone Number <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <input type="tel" id="user-phone-number" name="phone_number" class="form-control" required>
+                                 <i class="input-icon fas fa-phone"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label for="user-role">Role <span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <select id="user-role" name="role" class="form-control" required> <!-- Changed ID -->
+                                        <option value="" disabled selected>Select Role</option>
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                     <i class="input-icon fas fa-user-tag"></i> <!-- Added icon -->
+                                </div>
+                            </div>
+                            <div class="form-group half">
+                                <label for="user-team">Team <span class="required">*</span></label>
+                                <div class="input-wrapper">
+                                    <select id="user-team" name="team" class="form-control" required> <!-- Changed ID -->
+                                        <option value="" disabled selected>Select Team</option>
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                     <i class="input-icon fas fa-users"></i> <!-- Added icon -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions"> <!-- Changed from form-group -->
+                            <button type="button" class="btn-secondary cancel-modal">Cancel</button>
+                            <button type="submit" class="btn-primary">
+                                <span>Create Account</span>
+                                <div class="loading-spinner"></div>
+                                <!-- Removed success icon div -->
+                            </button>
+                        </div>
+                    </form>
+                    <!-- Removed toggle link -->
+                </div>
+            </div>
+        </div>
+        <!-- End Add User Modal -->
 
     </main>
 
 
     <script>
+        // Shared validation functions
+        function validateEmail(input) {
+            console.log('validateEmail called for input:', input.id);
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(input.value) && input.value.trim() !== '') {
+                markInvalid(input, 'Please enter a valid email address');
+                return false;
+            } else {
+                if (input.value.trim() === '' || emailRegex.test(input.value)) {
+                    clearInvalid(input);
+                }
+                return true;
+            }
+        }
+
+        function validateMobile(input) {
+            console.log('validateMobile called for input:', input.id);
+            const mobileRegex = /^\d{10}$/;
+            if (!mobileRegex.test(input.value) && input.value.trim() !== '') {
+                markInvalid(input, 'Please enter a valid 10-digit mobile number');
+                return false;
+            } else {
+                if (input.value.trim() === '' || mobileRegex.test(input.value)) {
+                    clearInvalid(input);
+                }
+                return true;
+            }
+        }
+
         // Initialize modal functionality
 initializeModal();
 
@@ -1151,13 +1322,20 @@ initializeClientForm();
 initializeLeadForm();
 // Initialize product form validation
 initializeProductForm();
+// Initialize user form validation
+initializeUserForm(); // Added call for user form
+
+// Populate dropdowns for user form
+populateRoles();
+populateTeams();
 
 // Modal functionality (Revised for multiple modals)
 function initializeModal() {
     const modalTriggers = [
         { cardId: 'add-client-card', modalId: 'add-client-modal' },
         { cardId: 'add-lead-card', modalId: 'add-lead-modal' },
-        { cardId: 'add-product-card', modalId: 'add-product-modal' } // Added product modal trigger
+        { cardId: 'add-product-card', modalId: 'add-product-modal' },
+        { cardId: 'add-users-card', modalId: 'add-user-modal' } // Added user modal trigger
         // Add more { cardId: '...', modalId: '...' } pairs here if needed
     ];
 
@@ -1242,6 +1420,34 @@ function initializeModal() {
 }
 
 // Client form validation and submission
+// Shared validation functions
+function validateEmail(input) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(input.value) && input.value.trim() !== '') {
+        markInvalid(input, 'Please enter a valid email address');
+        return false;
+    } else {
+         if (input.value.trim() === '' || emailRegex.test(input.value)) {
+             clearInvalid(input);
+        }
+        return true;
+    }
+}
+
+function validateMobile(input) {
+    // Basic validation for now - can be enhanced for country-specific formats
+    const mobileRegex = /^\d{10}$/;
+    if (!mobileRegex.test(input.value) && input.value.trim() !== '') {
+        markInvalid(input, 'Please enter a valid 10-digit mobile number');
+        return false;
+    } else {
+         if (input.value.trim() === '' || mobileRegex.test(input.value)) {
+             clearInvalid(input);
+        }
+        return true;
+    }
+}
+
 function initializeClientForm() {
     const clientForm = document.getElementById('add-client-form');
 
@@ -1662,7 +1868,241 @@ function initializeProductForm() {
     }
 }
 
-// Shared validation helpers (used by client, lead, and product forms)
+// Function to fetch and populate roles for the user form
+function populateRoles() {
+    const roleSelect = document.getElementById('user-role'); // Target the user form select
+    if (!roleSelect) {
+        console.error('User role select element not found.');
+        return;
+    }
+
+    fetch('/get-roles', {
+        method: 'POST', // Assuming POST as per your endpoint definition
+        headers: {
+            'Content-Type': 'application/json'
+            // Add any other necessary headers, like CSRF tokens if applicable
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success && Array.isArray(data.data)) {
+            // Clear existing options except the placeholder
+            roleSelect.innerHTML = '<option value="" disabled selected>Select Role</option>';
+
+            data.data.forEach(role => {
+                const option = document.createElement('option');
+                option.value = role;
+                option.textContent = role;
+                roleSelect.appendChild(option);
+            });
+        } else {
+            console.error('Failed to fetch roles or invalid data format:', data);
+            // Optionally display an error message to the user
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching roles:', error);
+        // Optionally display an error message to the user
+    });
+}
+
+// Function to fetch and populate teams for the user form
+function populateTeams() {
+    const teamSelect = document.getElementById('user-team'); // Target the user form select
+    if (!teamSelect) {
+        console.error('User team select element not found.');
+        return;
+    }
+
+    fetch('/get-teams', {
+        method: 'POST', // Assuming POST based on the roles endpoint
+        headers: {
+            'Content-Type': 'application/json'
+            // Add any other necessary headers, like CSRF tokens if applicable
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success && Array.isArray(data.data)) {
+            // Clear existing options except the placeholder
+            teamSelect.innerHTML = '<option value="" disabled selected>Select Team</option>';
+
+            data.data.forEach(team => {
+                const option = document.createElement('option');
+                option.value = team; // Assuming the value and text are the same
+                option.textContent = team;
+                teamSelect.appendChild(option);
+            });
+        } else {
+            console.error('Failed to fetch teams or invalid data format:', data);
+            // Optionally display an error message to the user
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching teams:', error);
+        // Optionally display an error message to the user
+    });
+}
+
+
+// User form validation and submission
+function initializeUserForm() {
+    console.log('Initializing user form...');
+    const userForm = document.getElementById('add-user-form');
+    console.log('User form element found:', userForm !== null);
+
+    // Email validation
+    const emailInput = document.getElementById('user-email');
+    if (emailInput) {
+        emailInput.addEventListener('blur', function() {
+            validateEmail(this); // Use shared validation function
+        });
+    }
+
+    // Mobile validation
+    const mobileInput = document.getElementById('user-phone-number');
+    if (mobileInput) {
+        mobileInput.addEventListener('blur', function() {
+            validateMobile(this); // Use shared validation function
+        });
+    }
+
+    // Form submission
+    if (userForm) {
+        console.log('User form found, adding submit listener');
+        userForm.addEventListener('submit', function(e) {
+            console.log('Form submit event triggered');
+            e.preventDefault();
+
+            // Validate required fields
+            console.log('Starting form validation');
+            const requiredInputs = this.querySelectorAll('[required]');
+            let isValid = true;
+
+            console.log('Required fields to validate:', requiredInputs.length);
+            requiredInputs.forEach(input => {
+                console.log('Validating field:', input.id, 'Value:', input.value.trim());
+                if (!input.value.trim()) {
+                    console.log('Field is empty:', input.id);
+                    markInvalid(input, 'This field is required');
+                    isValid = false;
+                } else {
+                    clearInvalid(input);
+                    // Specific validation for email/mobile if needed (already done on blur)
+                    if (input.id === 'user-email' && !validateEmail(input)) {
+                        console.log('Email validation failed');
+                        isValid = false;
+                    } else if (input.id === 'user-phone-number' && !validateMobile(input)) {
+                        console.log('Phone number validation failed');
+                        isValid = false;
+                    }
+                }
+            });
+            console.log('Form validation result:', isValid);
+
+            if (isValid) {
+                console.log('Form validation passed');
+
+                // Show loading state
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const submitText = submitBtn.querySelector('span');
+                const loadingSpinner = submitBtn.querySelector('.loading-spinner');
+
+                submitText.textContent = 'Creating...';
+                submitBtn.disabled = true;
+                console.log('Submit button disabled, showing loading state');
+
+                // Create FormData object and convert to plain JS object
+                const formData = new FormData(this);
+                const userData = {};
+                formData.forEach((value, key) => {
+                    userData[key] = value;
+                });
+                console.log('Form data prepared:', userData);
+
+                // Send data to server as JSON
+                console.log('Attempting to send data to /signup endpoint');
+                fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData)
+                })
+                .then(response => {
+                    console.log('Received response from server:', response);
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        console.log('Response is JSON, parsing...');
+                        return response.json();
+                    } else {
+                        console.error("Received non-JSON response from server for signup");
+                        console.log('Response content type:', contentType);
+                        return { status: false, message: "Server returned non-JSON response" };
+                    }
+                })
+                .then(data => {
+                    // Check 'status' field like in login.html
+                    if (data.status === true) {
+                        // Show success state
+                        submitText.textContent = 'Account Created!';
+                        submitBtn.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
+
+                        // Close modal after delay
+                        setTimeout(() => {
+                            const modal = document.getElementById('add-user-modal');
+                            modal.classList.remove('active');
+                            document.body.style.overflow = '';
+
+                            // Reset form and button
+                            setTimeout(() => {
+                                userForm.reset();
+                                submitText.textContent = 'Create Account';
+                                submitBtn.style.background = '';
+                                // loadingSpinner.classList.remove('visible'); // Optional
+                                submitBtn.disabled = false;
+
+                                // Show notification
+                                showNotification('User account created successfully!', 'success');
+                            }, 300);
+                        }, 1500);
+                    } else {
+                        // Show error state
+                        submitText.textContent = 'Create Account';
+                        // loadingSpinner.classList.remove('visible'); // Optional
+                        submitBtn.disabled = false;
+
+                        // Show error notification
+                        showNotification(data.message || 'Error creating account', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error creating user:', error);
+
+                    // Reset button state
+                    submitText.textContent = 'Create Account';
+                    // loadingSpinner.classList.remove('visible'); // Optional
+                    submitBtn.disabled = false;
+
+                    // Show error notification
+                    showNotification('Network error occurred', 'error');
+                });
+            }
+        });
+    }
+}
+
+// Shared validation helpers (used by client, lead, product, and user forms)
 function markInvalid(input, message) {
     input.classList.add('invalid');
 

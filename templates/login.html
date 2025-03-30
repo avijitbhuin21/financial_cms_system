@@ -246,37 +246,6 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgba(255, 255, 255, 0.9)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
         }
 
-        /* Password strength meter - hide by default */
-        .password-strength-meter {
-            display: none;
-            width: 100%;
-        }
-
-        .password-strength-meter.visible {
-            display: block;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            margin-top: 8px;
-            border-radius: 2px;
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .strength-text {
-            display: none;
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .strength-text.visible {
-            display: inline-block;
-            margin-top: 5px;
-            animation: fadeIn 0.3s ease;
-        }
-
         .password-wrapper {
             position: relative;
         }
@@ -367,44 +336,6 @@
                 opacity: 0;
             }
         }
-
-        .toggle-form {
-            margin-top: 40px;
-            font-size: 0.95em;
-            color: rgba(255, 255, 255, 0.85);
-        }
-
-        .toggle-form a {
-            color: var(--primary-color);
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            padding: 2px 5px;
-            border-radius: 4px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .toggle-form a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
-            border-radius: 1px;
-        }
-
-        .toggle-form a:hover {
-            color: var(--primary-light);
-            background-color: rgba(247, 197, 174, 0.1);
-        }
-
-        .toggle-form a:hover::after {
-            width: 100%;
-        }
         
         /* Form transition animations - Fixed */
         .form-fade-out {
@@ -445,16 +376,6 @@
         /* Hidden initially */
         #signup-form {
             display: none;
-        }
-        
-        /* For signup specific form groups */
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .form-group.half {
-            flex: 1;
         }
         
         /* Success indicators for form fields */
@@ -511,33 +432,6 @@
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
-        }
-        
-        .password-strength-meter:hover {
-            height: 7px;
-        }
-        
-        .password-strength-meter .strength {
-            height: 100%;
-            width: 0;
-            background: linear-gradient(to right, #f44336, #FFA726, #4CAF50);
-            transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-radius: 2px;
-        }
-        
-        .strength-text {
-            display: inline-block;
-            font-size: 0.7rem;
-            margin-top: 5px;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .strength-text.visible {
-            opacity: 1;
         }
         
         /* Form Error Shake Animation */
@@ -620,200 +514,24 @@
                 </div>
             </form>
 
-            <div class="toggle-form">
-                Don't have an account? <a id="show-signup">Sign Up</a>
-            </div>
         </div>
-
-        <!-- Sign-up Form (initially hidden) -->
-        <div id="signup-form">
-            <h2 class="form-title">Create Account</h2>
-            <p class="form-subtitle">Join us today</p>
-
-            <form action="/signup" method="POST" id="form-signup">
-                <div class="form-row">
-                    <div class="form-group half">
-                        <div class="input-group">
-                            <input type="text" id="first-name" name="first_name" class="form-control" placeholder=" " required>
-                            <label for="first-name" class="floating-label">First Name</label>
-                        </div>
-                    </div>
-                    <div class="form-group half">
-                        <div class="input-group">
-                            <input type="text" id="last-name" name="last_name" class="form-control" placeholder=" " required>
-                            <label for="last-name" class="floating-label">Last Name</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="email" id="signup-email" name="email" class="form-control" placeholder=" " required>
-                        <label for="signup-email" class="floating-label">Email Address</label>
-                    </div>
-                    <div class="helper-text" id="email-helper"></div>
-                </div>
-                <div class="form-group password-wrapper" style="margin-bottom: 0px;" >
-                    <div class="input-group">
-                        <input type="password" id="signup-password" name="password" class="form-control" placeholder=" " required>
-                        <label for="signup-password" class="floating-label">Password</label>
-                        <span class="password-icon"><i class="fas fa-eye"></i></span>
-                    </div>
-                    <div class="password-strength-meter">
-                        <div class="strength" id="password-strength"></div>
-                    </div>
-                    <span class="strength-text" id="strength-text"></span>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="tel" id="phone-number" name="phone_number" class="form-control" placeholder=" " required>
-                        <label for="phone-number" class="floating-label">Phone Number</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group half">
-                        <div class="input-group">
-                            <select id="role" name="role" class="form-control" required>
-                                <option value="" disabled selected>Select Role</option>
-                                <!-- Options will be populated dynamically by JavaScript -->
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group half">
-                        <div class="input-group">
-                            <select id="team" name="team" class="form-control" required>
-                                <option value="" disabled selected>Select Team</option>
-                                <!-- Options will be populated dynamically by JavaScript -->
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <button type="submit" class="btn-primary">
-                        <span>Create Account</span>
-                        <div class="loading-spinner"></div>
-                        <div class="success-icon"></div>
-                    </button>
-                </div>
-            </form>
-
-            <div class="toggle-form" style="margin-top: 15px;"> <!-- Reduced margin-top -->
-                Already have an account? <a id="show-login">Sign In</a>
-            </div>
-        </div>
+        <!-- Sign-up Form removed -->
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            
             // Add mouse movement parallax effect
             addParallaxEffect();
             
             // Toggle password visibility
             initPasswordToggles();
             
-            // Form toggling functionality
-            initFormToggling();
-            
             // Form validation and interactive effects
             initFormValidation();
             
-            // Password strength meter
-            initPasswordStrengthMeter();
-            
             // Button effects
             initButtonEffects();
-            
-            // Populate roles dropdown
-            populateRoles();
-            // Populate teams dropdown
-            populateTeams();
         });
-
-        // Function to fetch and populate roles
-        function populateRoles() {
-            const roleSelect = document.getElementById('role');
-            if (!roleSelect) {
-                console.error('Role select element not found.');
-                return;
-            }
-
-            fetch('/get-roles', {
-                method: 'POST', // Assuming POST as per your endpoint definition
-                headers: {
-                    'Content-Type': 'application/json'
-                    // Add any other necessary headers, like CSRF tokens if applicable
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success && Array.isArray(data.data)) {
-                    // Clear existing options except the placeholder
-                    roleSelect.innerHTML = '<option value="" disabled selected>Select Role</option>';
-                    
-                    data.data.forEach(role => {
-                        const option = document.createElement('option');
-                        option.value = role;
-                        option.textContent = role;
-                        roleSelect.appendChild(option);
-                    });
-                } else {
-                    console.error('Failed to fetch roles or invalid data format:', data);
-                    // Optionally display an error message to the user
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching roles:', error);
-                // Optionally display an error message to the user
-            });
-        }
-
-        // Function to fetch and populate teams
-        function populateTeams() {
-            const teamSelect = document.getElementById('team');
-            if (!teamSelect) {
-                console.error('Team select element not found.');
-                return;
-            }
-
-            fetch('/get-teams', {
-                method: 'POST', // Assuming POST based on the roles endpoint
-                headers: {
-                    'Content-Type': 'application/json'
-                    // Add any other necessary headers, like CSRF tokens if applicable
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success && Array.isArray(data.data)) {
-                    // Clear existing options except the placeholder
-                    teamSelect.innerHTML = '<option value="" disabled selected>Select Team</option>';
-                    
-                    data.data.forEach(team => {
-                        const option = document.createElement('option');
-                        option.value = team; // Assuming the value and text are the same
-                        option.textContent = team;
-                        teamSelect.appendChild(option);
-                    });
-                } else {
-                    console.error('Failed to fetch teams or invalid data format:', data);
-                    // Optionally display an error message to the user
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching teams:', error);
-                // Optionally display an error message to the user
-            });
-        }
 
         // Flag to prevent multiple form transitions
         let isTransitioning = false;
@@ -866,121 +584,17 @@
             });
         }
 
-        // Form toggling functionality - Fixed
-        function initFormToggling() {
-            const loginForm = document.getElementById('login-form');
-            const signupForm = document.getElementById('signup-form');
-            const showSignup = document.getElementById('show-signup');
-            const showLogin = document.getElementById('show-login');
-            
-            showSignup.addEventListener('click', function() {
-                if (isTransitioning) return; // Prevent multiple clicks
-                isTransitioning = true;
-                
-                // Fade out login form
-                loginForm.classList.add('form-fade-out');
-                
-                setTimeout(() => {
-                    loginForm.style.display = 'none';
-                    
-                    // Reset login form
-                    document.getElementById('form-login').reset();
-                    const loginHelpers = loginForm.querySelectorAll('.helper-text');
-                    loginHelpers.forEach(helper => {
-                        helper.textContent = '';
-                        helper.classList.remove('visible', 'error');
-                    });
-                    
-                    // Change background image
-                    document.querySelector('.moving-bg').style.backgroundImage = "url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1974&q=80')";
-                    
-                    // Make sure signup form is fully visible with proper styling
-
-                    signupForm.style.display = 'block';
-                    signupForm.style.opacity = '1';
-                    signupForm.style.transform = 'translateY(0)';
-                    signupForm.classList.remove('form-fade-out');
-                    
-                    // Force a reflow to ensure styles are applied
-                    void signupForm.offsetWidth;
-                    
-                    // Add visible class
-                    signupForm.classList.add('form-fade-in');
-                    
-                    // Re-initialize parallax effect to ensure it works with the new background
-                    setTimeout(() => {
-                        // Reset any transform on moving background
-                        const movingBg = document.querySelector('.moving-bg');
-                        movingBg.style.transform = 'translate3d(0, 0, 0)';
-                        
-                        isTransitioning = false;
-                    }, 300);
-                }, 300);
-            });
-            
-            showLogin.addEventListener('click', function() {
-                if (isTransitioning) return; // Prevent multiple clicks
-                isTransitioning = true;
-                
-                // Fade out signup form
-                signupForm.classList.remove('form-fade-in');
-                signupForm.classList.add('form-fade-out');
-                
-                setTimeout(() => {
-                    signupForm.style.display = 'none';
-                    
-                    // Reset signup form
-                    document.getElementById('form-signup').reset();
-                    document.getElementById('password-strength').style.width = '0';
-                    document.querySelector('.password-strength-meter').classList.remove('visible');
-                    document.getElementById('strength-text').classList.remove('visible');
-                    document.getElementById('strength-text').textContent = '';
-                    const signupHelpers = signupForm.querySelectorAll('.helper-text');
-                    signupHelpers.forEach(helper => {
-                        helper.textContent = '';
-                        helper.classList.remove('visible', 'error');
-                    });
-                    
-                    // Change background image
-                    document.querySelector('.moving-bg').style.backgroundImage = "url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1974&q=80')";
-                    
-                    // Make sure login form is fully visible with proper styling
-                    loginForm.style.display = 'block';
-                    loginForm.style.opacity = '1';
-                    loginForm.style.transform = 'translateY(0)';
-                    loginForm.classList.remove('form-fade-out');
-                    
-                    // Force a reflow to ensure styles are applied
-                    void loginForm.offsetWidth;
-                    
-                    // Add visible class
-                    loginForm.classList.add('form-fade-in');
-                    
-                    // Re-initialize parallax effect to ensure it works with the new background
-                    setTimeout(() => {
-                        // Reset any transform on moving background
-                        const movingBg = document.querySelector('.moving-bg');
-                        movingBg.style.transform = 'translate3d(0, 0, 0)';
-                        
-                        isTransitioning = false;
-                    }, 300);
-                }, 300);
-            });
-        }
-
         // Form validation and interactive effects
         function initFormValidation() {
             const loginForm = document.getElementById('form-login');
-            const signupForm = document.getElementById('form-signup');
             const loginUsername = document.getElementById('login-username');
-            const loginPassword = document.getElementById('login-password');
-            const signupEmail = document.getElementById('signup-email');
-            
-            // Helper text elements
+            const loginPassword = document.getElementById('login-password'); // Keep reference if needed for login validation
+
+            // Helper text elements (only for login)
             const usernameHelper = document.getElementById('username-helper');
             const passwordHelper = document.getElementById('password-helper');
-            const emailHelper = document.getElementById('email-helper');
-            
+            // Removed emailHelper
+
             // Username validation (login form)
             if (loginUsername) {
                 loginUsername.addEventListener('blur', function() {
@@ -999,76 +613,42 @@
                         usernameHelper.classList.remove('visible');
                     }
                 });
-                
+
                 loginUsername.addEventListener('focus', function() {
                     if (!usernameHelper.classList.contains('error')) {
                         usernameHelper.classList.remove('visible');
                     }
                 });
             }
-            
-            // Email validation (signup form)
-            if (signupEmail) {
-                // Validate email in real-time
-                signupEmail.addEventListener('input', function() {
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    
-                    if (this.value.length === 0) {
-                        // Empty field
-                        this.classList.remove('valid', 'invalid');
-                        emailHelper.classList.remove('visible', 'error');
-                    } else if (emailRegex.test(this.value)) {
-                        // Valid email
-                        this.classList.remove('invalid');
-                        this.classList.add('valid');
-                        emailHelper.textContent = 'Valid email!';
-                        emailHelper.classList.remove('error');
-                        emailHelper.classList.add('visible');
-                    } else {
-                        // Invalid email
-                        this.classList.remove('valid');
-                        this.classList.add('invalid');
-                        emailHelper.textContent = 'Please enter a valid email address';
-                        emailHelper.classList.add('error', 'visible');
-                    }
-                });
 
-                // Clear validation on focus
-                signupEmail.addEventListener('focus', function() {
-                    if (this.value.length === 0) {
-                        emailHelper.classList.remove('visible');
-                    }
-                });
-            }
-            
-            // Form submission with animations
+            // Removed Email validation (signup form) block
+
+            // Form submission with animations (only for login form)
             if (loginForm) {
                 loginForm.addEventListener('submit', handleFormSubmit);
             }
-            
-            if (signupForm) {
-                signupForm.addEventListener('submit', handleFormSubmit);
-            }
-            
+
+            // Removed signupForm event listener
+
             function handleFormSubmit(e) {
                 e.preventDefault(); // Prevent default form submission
-                
+
                 // Get the form elements
-                const form = this;
+                const form = this; // Should always be loginForm now
                 const button = form.querySelector('.btn-primary');
                 const buttonText = button.querySelector('span');
                 const successIcon = button.querySelector('.success-icon');
                 const originalText = buttonText.textContent;
-                
+
                 // Check all required fields
                 let hasError = false;
                 const requiredFields = form.querySelectorAll('[required]');
-                
+
                 requiredFields.forEach(field => {
                     if (!field.value) {
                         field.classList.add('invalid');
                         hasError = true;
-                        
+
                         // Show error message
                         const helperEl = field.closest('.form-group').querySelector('.helper-text');
                         if (helperEl) {
@@ -1077,7 +657,7 @@
                         }
                     }
                 });
-                
+
                 if (hasError) {
                     // Shake the form to indicate error
                     form.closest('div[id$="-form"]').classList.add('shake');
@@ -1087,8 +667,8 @@
                     return;
                 }
 
-                // Start loading animation
-                buttonText.textContent = form.id === 'form-login' ? 'Signing In...' : 'Creating Account...';
+                // Start loading animation (only for login)
+                buttonText.textContent = 'Signing In...';
 
                 // Get form data
                 const formData = new FormData(form);
@@ -1108,25 +688,18 @@
                         }
 
                         // Store credentials in localStorage for login form
-                        if (form.id === 'form-login') {
-                            localStorage.setItem('ilnb_uname', formData.get('username'));
-                            localStorage.setItem('ilnb_pwd', formData.get('password'));
-                        }
-                        
+                        localStorage.setItem('ilnb_uname', formData.get('username'));
+                        localStorage.setItem('ilnb_pwd', formData.get('password'));
+
                         // Show success
                         successIcon.classList.add('visible');
-                        buttonText.textContent = form.id === 'form-login' ? 'Signed In!' : 'Account Created!';
+                        buttonText.textContent = 'Signed In!';
                         button.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
-                        
+
                         // Redirect to home page after successful login
-                        if (form.id === 'form-login') {
-                            window.location.href = '/home';
-                        }else{
-                            // Redirect to login page after successful signup
-                            setTimeout(() => {
-                                window.location.href = '/';
-                            }, 2000); // Redirect after 2 seconds
-                        }
+                        window.location.href = '/home';
+
+                        // Removed signup redirection logic
                     } else {
                        // Show error message
                        buttonText.textContent = originalText;
@@ -1162,63 +735,6 @@
                        title.insertAdjacentElement('afterend', errorDiv);
                    }
                    errorDiv.textContent = 'An error occurred. Please try again.';
-                });
-            }
-        }
-
-        // Password strength meter
-        function initPasswordStrengthMeter() {
-            const signupPassword = document.getElementById('signup-password');
-            const strengthMeter = document.getElementById('password-strength');
-            const strengthMeterContainer = document.querySelector('.password-strength-meter');
-            const strengthText = document.getElementById('strength-text');
-            
-            if (signupPassword && strengthMeter) {
-                signupPassword.addEventListener('input', function() {
-                    const val = this.value;
-                    let strength = 0;
-                    let strengthLabel = '';
-                    
-                    // Show or hide strength meter based on password presence
-                    if (val.length > 0) {
-                        strengthMeterContainer.classList.add('visible');
-                        
-                        // Calculate password strength
-                        if (val.length >= 8) strength += 20;
-                        if (val.match(/[a-z]+/)) strength += 20;
-                        if (val.match(/[A-Z]+/)) strength += 20;
-                        if (val.match(/[0-9]+/)) strength += 20;
-                        if (val.match(/[^a-zA-Z0-9]+/)) strength += 20;
-                        
-                        // Set strength meter width
-                        strengthMeter.style.width = strength + '%';
-                        
-                        // Determine strength label and color
-                        if (strength < 40) {
-                            strengthLabel = 'WEAK';
-                            strengthMeter.style.background = '#f44336';
-                        } else if (strength < 80) {
-                            strengthLabel = 'MEDIUM';
-                            strengthMeter.style.background = '#FFA726';
-                        } else {
-                            strengthLabel = 'STRONG';
-                            strengthMeter.style.background = '#4CAF50';
-                        }
-                        
-                        // Show strength text
-                        strengthText.textContent = strengthLabel;
-                        strengthText.classList.add('visible');
-                    } else {
-                        // Hide strength meter and text when no password
-                        strengthMeterContainer.classList.remove('visible');
-                        strengthText.classList.remove('visible');
-                    }
-                });
-                
-                // Reset strength meter when form is reset
-                document.getElementById('form-signup').addEventListener('reset', function() {
-                    strengthMeterContainer.classList.remove('visible');
-                    strengthText.classList.remove('visible');
                 });
             }
         }
