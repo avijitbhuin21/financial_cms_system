@@ -1,6 +1,7 @@
 import os
 from supabase import create_client, Client
 from typing import Dict, Any, List, Optional
+import hashlib
 
 # Initialize Supabase client
 url: str = os.environ.get("SUPABASE_URL", "")
@@ -55,10 +56,21 @@ def delete_data(table: str, match_criteria: Dict[str, Any]) -> List[Dict[str, An
     except Exception as e:
         raise Exception(f"Error deleting data from {table}: {str(e)}")
 
+# =============================================== ENCRYPTION FUNCTIONS ===================================================
+def get_sha256_hash(text):
+    if isinstance(text, str):
+        text = text.encode('utf-8')
+    hash_object = hashlib.sha256(text)
+    return hash_object.hexdigest()
+
+
+
+
+
 # ================================================ USER FUNCTIONS ===================================================
 
 def login(email, password):
-    database_data = select_data("Users", {"emailid": email, "password": password})
+    database_data = select_data("Users", {"emailid": email, "password": get_sha256_hash(password)})
     if database_data != []:
         return {"status": True, "role":database_data[0]['roleid'], "team": database_data[0]['teamid'] }
     
@@ -66,11 +78,13 @@ def login(email, password):
         return {"status": False, "role": None, "team": None}
     
 def signup(first_name, last_name, email, password, phone_number, roleid, teamid):
+    roleid = select_data("Roles", {"rolename": roleid})[0]['roleid']
+    teamid = select_data("Teams", {"teamname": teamid})[0]['teamid']
     try:
         data = {
             "username": first_name + " " + last_name,
             "emailid": email,
-            "password": password,
+            "password": get_sha256_hash(password),
             "mobile": phone_number,
             "roleid": roleid,
             "teamid": teamid,
@@ -78,4 +92,16 @@ def signup(first_name, last_name, email, password, phone_number, roleid, teamid)
         insert_data("Users", data)
         return {"status": True}
     except Exception as e:
+        return {"status": False, "message": str(e)}
+    
+def add_client_to_db(client_data):
+    try:
+        response = insert_data("clients", client_data)
+        if response: 
+            return {"status": True, "data": response}
+        else:
+            return {"status": False, "message": "Failed to add client or no data returned."}
+            
+    except Exception as e:
+        print(f"Error in add_client_to_db: {str(e)}")
         return {"status": False, "message": str(e)}

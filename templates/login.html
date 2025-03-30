@@ -11,6 +11,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        .modal .form-control:-webkit-autofill,
+        .modal .form-control:-webkit-autofill:hover,
+        .modal .form-control:-webkit-autofill:focus,
+        .modal .form-control:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px rgba(25, 35, 60, 0.95) inset !important;
+            -webkit-text-fill-color: var(--text-color) !important;
+            transition: background-color 5000s ease-in-out 0s;
+            background-clip: content-box !important;
+            border-color: rgba(247, 197, 174, 0.4) !important;
+        }
+
+        /* Add styling for autofill fields in general, not just in modals */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px rgba(25, 35, 60, 0.95) inset !important;
+            -webkit-text-fill-color: var(--text-color) !important;
+            transition: background-color 5000s ease-in-out 0s;
+            background-clip: content-box !important;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -690,9 +711,9 @@
                         <div class="input-group">
                             <select id="team" name="team" class="form-control" required>
                                 <option value="" disabled selected>Select Team</option>
-                                <option value="team1">Team 1</option>
-                                <option value="team2">Team 2</option>
-                                <option value="team3">Team 3</option>
+                                <option value="Team1">Team 1</option>
+                                <option value="Team2">Team 2</option>
+                                <option value="Team3">Team 3</option>
                             </select>
                              <!-- No floating label needed for select, but keep structure -->
                         </div>
@@ -1042,8 +1063,15 @@
                         buttonText.textContent = form.id === 'form-login' ? 'Signed In!' : 'Account Created!';
                         button.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
                         
-                        // Handle redirect or other success actions
-                        // You may want to redirect to a dashboard or other page here
+                        // Redirect to home page after successful login
+                        if (form.id === 'form-login') {
+                            window.location.href = '/home';
+                        }else{
+                            // Redirect to login page after successful signup
+                            setTimeout(() => {
+                                window.location.href = '/';
+                            }, 2000); // Redirect after 2 seconds
+                        }
                     } else {
                        // Show error message
                        loadingSpinner.classList.remove('visible');
