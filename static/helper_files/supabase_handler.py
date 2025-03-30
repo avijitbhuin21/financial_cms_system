@@ -105,3 +105,21 @@ def add_client_to_db(client_data):
     except Exception as e:
         print(f"Error in add_client_to_db: {str(e)}")
         return {"status": False, "message": str(e)}
+
+def add_lead_to_db(lead_data):
+    """Inserts lead data into the leads table."""
+    try:
+        # Use the generic insert_data function
+        response = insert_data("leads", lead_data)
+        
+        # Check if the insertion was successful by checking if the returned dict is empty
+        if response: # An empty dict evaluates to False
+            # 'response' already holds the inserted data dict
+            return {"status": True, "data": response}
+        else:
+            # insert_data returned an empty dict, indicating failure or no data returned
+            return {"status": False, "message": "Failed to add lead or no data returned."}
+            
+    except Exception as e:
+        print(f"Error in add_lead_to_db: {str(e)}") # Log the specific error
+        return {"status": False, "message": str(e)}

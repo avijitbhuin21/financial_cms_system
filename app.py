@@ -110,5 +110,44 @@ def add_client():
         print(f"Error adding client: {str(e)}")
         return jsonify({"success": False, "message": "Server error"})
 
+
+@app.route('/add-lead', methods=['POST'])
+def add_lead():
+    """Handles adding a new lead to the database."""
+    if 'username' not in session:
+        return jsonify({"success": False, "message": "Not logged in"}), 401 # Unauthorized
+
+    try:
+        # Get lead data from request JSON
+        lead_data = request.json
+        
+        # Basic validation (check for required fields from the form)
+        required_fields = ['leadname', 'leadgenerator', 'leadstatus']
+        for field in required_fields:
+            if not lead_data.get(field):
+                print(f"Missing required lead field: {field}")
+                return jsonify({"success": False, "message": f"Missing required field: {field}"}), 400 # Bad Request
+
+        # Import the handler function
+        from static.helper_files.supabase_handler import add_lead_to_db
+        
+        # Call the function to add data to Supabase
+        result = add_lead_to_db(lead_data)
+        
+        # Return success or failure based on the result from the handler
+        if result.get('status', False):
+            return jsonify({"success": True}) # OK
+        else:
+            # Log the database error message if available
+            db_message = result.get('message', 'Unknown database error')
+            print(f"Database error adding lead: {db_message}")
+            return jsonify({"success": False, "message": db_message}), 500 # Internal Server Error
+            
+    except Exception as e:
+        # Log any unexpected errors during processing
+        print(f"Error processing /add-lead request: {str(e)}")
+        return jsonify({"success": False, "message": "Server error processing request"}), 500 # Internal Server Error
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5005)

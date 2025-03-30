@@ -782,7 +782,7 @@
         .modal input[type="date"].form-control:focus {
             background: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
             border-color: rgba(247, 197, 174, 0.4); /* Use theme primary color accent */
-            box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.15),
+            box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.15), 
                         0 4px 8px rgba(0, 0, 0, 0.1) inset;
             outline: none;
         }
@@ -817,9 +817,9 @@
         }
 
         /* Initially hide form rows and prepare for animation */
-        .modal-body .form-row,
+        .modal-body .form-row, 
         .modal-body .form-group:not(.half) { /* Target full-width groups too */
-            opacity: 0;
+            opacity: 0; 
         }
 
         /* Apply animation when modal is active */
@@ -899,16 +899,16 @@
                 </div>
             </div>
                 
-                <!-- Card 2 -->
-                <div class="card">
+                <!-- Card 2: Add Lead -->
+                <div class="card" id="add-lead-card"> <!-- Added ID -->
                     <div class="card-content">
                         <div class="card-icon">
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-user-tag"></i> <!-- Changed icon -->
                         </div>
-                        <h3 class="card-title">Team Management</h3>
-                        <p class="card-description">Manage team members, assign tasks, and track team performance.</p>
+                        <h3 class="card-title">Add Lead</h3> <!-- Changed title -->
+                        <p class="card-description">Add a new lead to the database with relevant details.</p> <!-- Changed description -->
                         <div class="card-action">
-                            <span>Manage</span>
+                            <span>Add New</span> <!-- Changed action text -->
                             <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
@@ -1133,6 +1133,65 @@
                 </div>
             </div>
         </div>
+        <!-- Add Lead Modal -->
+        <div class="modal" id="add-lead-modal"> <!-- Changed ID -->
+            <div class="modal-backdrop"></div>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Add New Lead</h3> <!-- Changed Title -->
+                    <!-- Close button removed -->
+                </div>
+                <div class="modal-body">
+                    <form id="add-lead-form" action="/add-lead" method="POST"> <!-- Changed ID and Action -->
+                        
+                        <!-- Lead Name -->
+                        <div class="form-group"> <!-- Changed from form-row for single full-width field -->
+                            <label for="lead-name">Lead Name <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <input type="text" id="lead-name" name="leadname" class="form-control" required> <!-- Changed IDs/Names -->
+                                <i class="input-icon fas fa-user"></i>
+                            </div>
+                        </div>
+
+                        <!-- Lead Generator -->
+                         <div class="form-group">
+                            <label for="lead-generator">Lead Generator <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <input type="text" id="lead-generator" name="leadgenerator" class="form-control" value="{{ username }}" required readonly> <!-- Changed IDs/Names, pre-filled, required -->
+                                <i class="input-icon fas fa-user-tie"></i>
+                            </div>
+                        </div>
+
+                        <!-- Lead Converter -->
+                        <div class="form-group">
+                            <label for="lead-converter">Lead Converter</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="lead-converter" name="leadconverter" class="form-control"> <!-- Changed IDs/Names -->
+                                <i class="input-icon fas fa-user-check"></i>
+                            </div>
+                        </div>
+
+                        <!-- Lead Status -->
+                        <div class="form-group">
+                            <label for="lead-status">Lead Status <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <input type="text" id="lead-status" name="leadstatus" class="form-control" required> <!-- Changed IDs/Names, required -->
+                                <i class="input-icon fas fa-info-circle"></i>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary cancel-modal">Cancel</button> <!-- Keep cancel functionality -->
+                            <button type="submit" class="btn-primary">
+                                <span>Add Lead</span> <!-- Changed Text -->
+                                <div class="loading-spinner"></div> <!-- Keep spinner structure -->
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
     </main>
     
@@ -1143,60 +1202,93 @@ initializeModal();
 
 // Initialize client form validation
 initializeClientForm();
+// Initialize lead form validation
+initializeLeadForm();
 
-// Modal functionality
+// Modal functionality (Revised for multiple modals)
 function initializeModal() {
-    const addClientCard = document.getElementById('add-client-card');
-    const modal = document.getElementById('add-client-modal');
-    const modalBackdrop = modal.querySelector('.modal-backdrop');
-    const closeModalBtn = modal.querySelector('.close-modal');
-    const cancelModalBtn = modal.querySelector('.cancel-modal');
-    
-    // Open modal when clicking on Add Client card
-    addClientCard.addEventListener('click', function() {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling of background
+    const modalTriggers = [
+        { cardId: 'add-client-card', modalId: 'add-client-modal' },
+        { cardId: 'add-lead-card', modalId: 'add-lead-modal' }
+        // Add more { cardId: '...', modalId: '...' } pairs here if needed
+    ];
+
+    modalTriggers.forEach(trigger => {
+        const card = document.getElementById(trigger.cardId);
+        const modal = document.getElementById(trigger.modalId);
+
+        if (!card || !modal) {
+            // console.warn(`Card (${trigger.cardId}) or Modal (${trigger.modalId}) not found.`);
+            return; // Skip if elements don't exist for this pair
+        }
+
+        const modalBackdrop = modal.querySelector('.modal-backdrop');
+        const cancelModalBtns = modal.querySelectorAll('.cancel-modal'); // Get all cancel buttons in this modal
+        const modalContainer = modal.querySelector('.modal-container');
+        const form = modal.querySelector('form'); // Get the form in this modal
+
+        // --- Open Modal ---
+        card.addEventListener('click', function() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+
+        // --- Close Modal Function (Specific to this modal instance) ---
+        const closeModal = function() {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Restore background scrolling
+
+            // Reset the specific form inside this modal after animation
+            if (form) {
+                setTimeout(() => {
+                    form.reset();
+                    // Clear validation states if any exist within this specific modal
+                    const errorMessages = modal.querySelectorAll('.error-message.visible');
+                    errorMessages.forEach(error => error.classList.remove('visible'));
+                    const invalidInputs = modal.querySelectorAll('.form-control.invalid');
+                    invalidInputs.forEach(input => input.classList.remove('invalid'));
+                }, 300); // Delay matches typical animation duration
+            }
+        };
+
+        // --- Attach Close Listeners ---
+        // Cancel Button(s) within this modal
+        if (cancelModalBtns.length > 0) {
+             cancelModalBtns.forEach(btn => btn.addEventListener('click', closeModal));
+        }
+
+        // Backdrop for this modal
+        if (modalBackdrop) {
+            modalBackdrop.addEventListener('click', closeModal);
+        }
+
+        // Prevent closing when clicking inside this modal's container
+        if (modalContainer) {
+             modalContainer.addEventListener('click', function(e) {
+                 e.stopPropagation(); // Stop click from bubbling up to the backdrop
+             });
+        }
     });
-    
-    // Close modal functions
-    const closeModal = function() {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-        
-        // Reset form
-        setTimeout(() => {
-            document.getElementById('add-client-form').reset();
-            const errorMessages = modal.querySelectorAll('.error-message.visible');
-            errorMessages.forEach(error => error.classList.remove('visible'));
-            const invalidInputs = modal.querySelectorAll('.form-control.invalid');
-            invalidInputs.forEach(input => input.classList.remove('invalid'));
-        }, 300);
-    };
-    
-    // Close modal when clicking on close button (if it exists)
-    if (closeModalBtn) {
-        closeModalBtn.addEventListener('click', closeModal);
-    }
-    
-    // Close modal when clicking on cancel button (if it exists)
-    if (cancelModalBtn) {
-        cancelModalBtn.addEventListener('click', closeModal);
-    }
-    
-    // Close modal when clicking on backdrop (if it exists)
-    if (modalBackdrop) {
-        modalBackdrop.addEventListener('click', closeModal);
-    }
-    
-    // Prevent closing when clicking inside modal container
-    modal.querySelector('.modal-container').addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-    
-    // Close modal when pressing Escape key
+
+    // --- Global Escape Key Listener (Closes any active modal) ---
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeModal();
+        if (e.key === 'Escape') {
+            const activeModal = document.querySelector('.modal.active'); // Find the currently active modal
+            if (activeModal) {
+                 // Replicate the core closing logic for the active modal
+                 activeModal.classList.remove('active');
+                 document.body.style.overflow = '';
+                 const activeForm = activeModal.querySelector('form');
+                 if (activeForm) {
+                     setTimeout(() => {
+                         activeForm.reset();
+                         const errorMessages = activeModal.querySelectorAll('.error-message.visible');
+                         errorMessages.forEach(error => error.classList.remove('visible'));
+                         const invalidInputs = activeModal.querySelectorAll('.form-control.invalid');
+                         invalidInputs.forEach(input => input.classList.remove('invalid'));
+                     }, 300);
+                 }
+            }
         }
     });
 }
@@ -1413,12 +1505,122 @@ function initializeClientForm() {
                 } catch (error) {
                     console.error("Browser doesn't support showPicker() or another error occurred:", error);
                     // Fallback: maybe focus the input?
-                    // dobInput.focus();
+                    // dobInput.focus(); 
                 }
             });
         }
     }
     // --- End of custom date icon listener ---
+}
+
+// Lead form validation and submission
+function initializeLeadForm() {
+    const leadForm = document.getElementById('add-lead-form');
+    
+    // Form submission
+    if (leadForm) {
+        leadForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate required fields
+            const requiredInputs = this.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    // Use the generic markInvalid function if needed, or just basic check
+                    console.error(`Required field ${input.name} is empty.`); // Simple console log for now
+                    isValid = false;
+                    // Optionally add visual feedback like markInvalid(input, 'This field is required');
+                } else {
+                    // Add any specific lead validation here if needed
+                    // clearInvalid(input); // Clear previous errors if using markInvalid
+                }
+            });
+            
+            if (isValid) {
+                // Show loading state (assuming spinner structure is the same)
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const submitText = submitBtn.querySelector('span');
+                const loadingSpinner = submitBtn.querySelector('.loading-spinner');
+                
+                submitText.textContent = 'Adding...';
+                // If using spinner: loadingSpinner.classList.add('visible');
+                submitBtn.disabled = true;
+                
+                // Create FormData object and convert to plain JS object
+                const formData = new FormData(this);
+                const leadData = {};
+                formData.forEach((value, key) => {
+                    leadData[key] = value;
+                });
+
+                // Send data to server as JSON
+                fetch('/add-lead', { // Changed endpoint
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(leadData) // Send JSON string
+                })
+                .then(response => {
+                    // Check if response is JSON before parsing
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json();
+                    } else {
+                        console.error("Received non-JSON response from server for add-lead");
+                        return { success: false, message: "Server returned non-JSON response" };
+                    }
+                })
+                .then(data => {
+                    if (data.success === true) { // Expecting { success: true } from backend
+                        // Show success state
+                        submitText.textContent = 'Lead Added!'; // Changed text
+                        submitBtn.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
+                        
+                        // Close modal after delay
+                        setTimeout(() => {
+                            const modal = document.getElementById('add-lead-modal'); // Target correct modal
+                            modal.classList.remove('active');
+                            document.body.style.overflow = '';
+                            
+                            // Reset form and button
+                            setTimeout(() => {
+                                leadForm.reset(); // Reset this specific form
+                                submitText.textContent = 'Add Lead'; // Changed text
+                                submitBtn.style.background = '';
+                                // If using spinner: loadingSpinner.classList.remove('visible');
+                                submitBtn.disabled = false;
+                                
+                                // Show notification
+                                showNotification('Lead added successfully!', 'success'); // Changed text
+                            }, 300);
+                        }, 1500);
+                    } else {
+                        // Show error state
+                        submitText.textContent = 'Add Lead'; // Changed text
+                        // If using spinner: loadingSpinner.classList.remove('visible');
+                        submitBtn.disabled = false;
+                        
+                        // Show error notification
+                        showNotification(data.message || 'Error adding lead', 'error'); // Changed text
+                    }
+                })
+                .catch(error => {
+                    console.error('Error adding lead:', error);
+                    
+                    // Reset button state
+                    submitText.textContent = 'Add Lead'; // Changed text
+                    // If using spinner: loadingSpinner.classList.remove('visible');
+                    submitBtn.disabled = false;
+                    
+                    // Show error notification
+                    showNotification('Network error occurred while adding lead', 'error'); // Changed text
+                });
+            }
+        });
+    }
 }
 
 // Notification system
