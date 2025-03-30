@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 
 #LOCAL IMPORTS
-from static.helper_files.supabase_handler import login, signup
-
+from static.helper_files.supabase_handler import *
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'
@@ -10,7 +9,6 @@ app.secret_key = 'your-secret-key-here'
 
 @app.route('/')
 def login_page():
-    """Renders the login page."""
     if 'username' in session:
         return redirect(url_for('home'))
     message = session.pop('error_message', None)  # Get and remove message from session
@@ -18,7 +16,6 @@ def login_page():
 
 @app.route('/home')
 def home():
-    """Renders the home page."""
     if 'username' not in session:
         return redirect(url_for('login_page'))
     return render_template('home.html', 
@@ -45,7 +42,6 @@ def handle_login():
 
 @app.route('/signup', methods=['POST'])
 def handle_signup():
-    """Handles the signup form submission."""
     first_name = request.form.get('first_name')
     last_name = request.form.get('last_name')
     email = request.form.get('email')
@@ -62,42 +58,22 @@ def handle_signup():
 
 @app.route('/logout')
 def logout():
-    """Handles user logout."""
     session.clear()
     return redirect(url_for('login_page'))
 
 @app.route('/add-client', methods=['POST'])
 def add_client():
-    """Handles adding a new client to the database."""
     if 'username' not in session:
         return jsonify({"success": False, "message": "Not logged in"})
     
     try:
-        # --- DEBUG LOGGING START ---
-        print(f"--- Request Headers ---")
-        print(request.headers)
-        print(f"--- Request Raw Data ---")
-        print(request.data) # Log raw data bytes
-        print(f"--- Attempting request.json ---")
-        # --- DEBUG LOGGING END ---
+        client_data = request.json
 
-        # Get client data from request
-        client_data = request.json # This line will likely fail if Content-Type is wrong
-
-        # Basic validation
         required_fields = ['name', 'emailid', 'mobile', 'pan']
         for field in required_fields:
             if not client_data.get(field):
                 return jsonify({"success": False, "message": f"Missing required field: {field}"})
         
-        # Here you would add your Supabase code to insert into the clients table
-        # For example:
-        # from supabase import create_client
-        # supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-        # result = supabase.table('clients').insert(client_data).execute()
-        
-        # This is a placeholder - replace with your actual Supabase code
-        # Assuming you have a function in your supabase_handler.py like:
         from static.helper_files.supabase_handler import add_client_to_db
         result = add_client_to_db(client_data)
         
@@ -113,41 +89,64 @@ def add_client():
 
 @app.route('/add-lead', methods=['POST'])
 def add_lead():
-    """Handles adding a new lead to the database."""
     if 'username' not in session:
         return jsonify({"success": False, "message": "Not logged in"}), 401 # Unauthorized
-
     try:
-        # Get lead data from request JSON
         lead_data = request.json
-        
-        # Basic validation (check for required fields from the form)
         required_fields = ['leadname', 'leadgenerator', 'leadstatus']
         for field in required_fields:
             if not lead_data.get(field):
                 print(f"Missing required lead field: {field}")
-                return jsonify({"success": False, "message": f"Missing required field: {field}"}), 400 # Bad Request
-
-        # Import the handler function
-        from static.helper_files.supabase_handler import add_lead_to_db
+                return jsonify({"success": False, "message": f"Missing required field: {field}"}), 400
         
-        # Call the function to add data to Supabase
         result = add_lead_to_db(lead_data)
         
-        # Return success or failure based on the result from the handler
         if result.get('status', False):
-            return jsonify({"success": True}) # OK
+            return jsonify({"success": True})
         else:
-            # Log the database error message if available
             db_message = result.get('message', 'Unknown database error')
             print(f"Database error adding lead: {db_message}")
             return jsonify({"success": False, "message": db_message}), 500 # Internal Server Error
             
     except Exception as e:
-        # Log any unexpected errors during processing
-        print(f"Error processing /add-lead request: {str(e)}")
         return jsonify({"success": False, "message": "Server error processing request"}), 500 # Internal Server Error
 
+
+@app.route('/add-product', methods=['POST'])
+def add_product_route():
+    if 'username' not in session:
+        return jsonify({"success": False, "message": "Not logged in"}), 401 # Unauthorized
+    try:
+        product_data = request.json
+        # Ensure required fields based on DB schema and form are present
+        required_fields = ['productid', 'productname']
+        for field in required_fields:
+            if not product_data.get(field):
+                print(f"Missing required product field: {field}")
+                return jsonify({"success": False, "message": f"Missing required field: {field}"}), 400 # Bad Request
+
+        # Call the handler function (already imported)
+        result = add_product(product_data)
+
+        if result.get('status', False):
+            return jsonify({"success": True})
+        else:
+            db_message = result.get('message', 'Unknown database error')
+            print(f"Database error adding product: {db_message}")
+            return jsonify({"success": False, "message": db_message}), 500 # Internal Server Error
+
+    except Exception as e:
+        print(f"Error in /add-product route: {str(e)}")
+        return jsonify({"success": False, "message": "Server error processing request"}), 500 # Internal Server Error
+
+@app.route('/get-roles', methods=['POST'])
+def get_roles():
+    return jsonify({"success": True, "data": get_roles_from_supabase()})
+
+@app.route('/get-teams', methods=['POST'])
+def get_teams():
+    data = [i['teamname'] for i in select_data("Teams")]
+    return jsonify({"success": True, "data": data})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5005)

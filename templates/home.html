@@ -348,21 +348,21 @@
                 flex-direction: column;
                 gap: 15px;
             }
-            
+
             .main-container {
                 padding: 0 20px;
                 margin: 20px auto;
             }
-            
+
             .cards-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .user-profile {
                 width: 100%;
                 justify-content: center;
             }
-            
+
             .actions {
                 margin-top: 10px;
             }
@@ -413,7 +413,7 @@
             backdrop-filter: blur(20px);
             border-radius: 25px;
             border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
                         0 0 100px rgba(247, 197, 174, 0.15),
                         inset 0 1px 1px rgba(255, 255, 255, 0.1);
             overflow: hidden;
@@ -452,9 +452,9 @@
             left: 5%;
             width: 90%;
             height: 1px;
-            background: linear-gradient(to right, 
-                transparent, 
-                rgba(247, 197, 174, 0.3), 
+            background: linear-gradient(to right,
+                transparent,
+                rgba(247, 197, 174, 0.3),
                 transparent
             );
         }
@@ -533,14 +533,14 @@
         .modal .form-control:focus {
             background: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
             border-color: rgba(247, 197, 174, 0.4);
-            box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.15), 
+            box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.15),
                         0 4px 8px rgba(0, 0, 0, 0.1) inset;
         }
 
         .modal .form-control:focus {
             background-color: rgba(255, 255, 255, 0.08);
             border-color: rgba(247, 197, 174, 0.5);
-            box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.2), 
+            box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.2),
                         0 4px 8px rgba(0, 0, 0, 0.1) inset;
             outline: none;
         }
@@ -592,9 +592,9 @@
             left: 5%;
             width: 90%;
             height: 1px;
-            background: linear-gradient(to right, 
-                transparent, 
-                rgba(247, 197, 174, 0.2), 
+            background: linear-gradient(to right,
+                transparent,
+                rgba(247, 197, 174, 0.2),
                 transparent
             );
         }
@@ -782,7 +782,7 @@
         .modal input[type="date"].form-control:focus {
             background: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
             border-color: rgba(247, 197, 174, 0.4); /* Use theme primary color accent */
-            box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.15), 
+            box-shadow: 0 0 0 3px rgba(247, 197, 174, 0.15),
                         0 4px 8px rgba(0, 0, 0, 0.1) inset;
             outline: none;
         }
@@ -817,9 +817,9 @@
         }
 
         /* Initially hide form rows and prepare for animation */
-        .modal-body .form-row, 
+        .modal-body .form-row,
         .modal-body .form-group:not(.half) { /* Target full-width groups too */
-            opacity: 0; 
+            opacity: 0;
         }
 
         /* Apply animation when modal is active */
@@ -863,7 +863,7 @@
             <i class="fas fa-chart-line"></i>
             <span>ILNB-Dashboard</span>
         </a>
-        
+
         <div class="user-info">
             <div class="user-profile">
                 <div class="avatar">
@@ -873,7 +873,7 @@
                     <div class="username">{{ username }}</div>
                 </div>
             </div>
-            
+
             <div class="actions">
                 <a href="/logout" class="action-btn logout-btn" title="Logout">
                     <i class="fas fa-sign-out-alt"></i>
@@ -885,6 +885,7 @@
     <main class="main-container">
 
         <div class="cards-grid">
+            <!-- Card 1: Add Client -->
             <div class="card" id="add-client-card">
                 <div class="card-content">
                     <div class="card-icon">
@@ -898,7 +899,7 @@
                     </div>
                 </div>
             </div>
-                
+
                 <!-- Card 2: Add Lead -->
                 <div class="card" id="add-lead-card"> <!-- Added ID -->
                     <div class="card-content">
@@ -913,127 +914,21 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Card 3 -->
-                <div class="card">
+
+                <!-- Card 3: Add Product -->
+                <div class="card" id="add-product-card"> <!-- Added ID -->
                     <div class="card-content">
                         <div class="card-icon">
-                            <i class="fas fa-tasks"></i>
+                            <i class="fas fa-box-open"></i> <!-- Changed icon -->
                         </div>
-                        <h3 class="card-title">Task Tracker</h3>
-                        <p class="card-description">Track and manage your daily tasks, set priorities, and monitor progress.</p>
+                        <h3 class="card-title">Add Product</h3> <!-- Changed title -->
+                        <p class="card-description">Add a new product to the inventory database.</p> <!-- Changed description -->
                         <div class="card-action">
-                            <span>View Tasks</span>
+                            <span>Add New</span> <!-- Changed action text -->
                             <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Card 4 -->
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-icon">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <h3 class="card-title">Calendar</h3>
-                        <p class="card-description">View and manage appointments, meetings, and important dates.</p>
-                        <div class="card-action">
-                            <span>Open Calendar</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card 5 -->
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <h3 class="card-title">Reports</h3>
-                        <p class="card-description">Generate and view custom reports for different metrics and time periods.</p>
-                        <div class="card-action">
-                            <span>Generate Reports</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card 6 -->
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-icon">
-                            <i class="fas fa-comment-alt"></i>
-                        </div>
-                        <h3 class="card-title">Messages</h3>
-                        <p class="card-description">Communicate with team members and clients through secure messaging.</p>
-                        <div class="card-action">
-                            <span>Open Messages</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card 7 -->
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-icon">
-                            <i class="fas fa-cog"></i>
-                        </div>
-                        <h3 class="card-title">Settings</h3>
-                        <p class="card-description">Configure your account settings, notifications, and preferences.</p>
-                        <div class="card-action">
-                            <span>Configure</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card 8 -->
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-icon">
-                            <i class="fas fa-user-shield"></i>
-                        </div>
-                        <h3 class="card-title">Security</h3>
-                        <p class="card-description">Manage account security, change password, and setup two-factor authentication.</p>
-                        <div class="card-action">
-                            <span>Secure Account</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card 9 -->
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-icon">
-                            <i class="fas fa-question-circle"></i>
-                        </div>
-                        <h3 class="card-title">Help & Support</h3>
-                        <p class="card-description">Access help resources, FAQs, and contact support team for assistance.</p>
-                        <div class="card-action">
-                            <span>Get Help</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Card 10 -->
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-icon">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <h3 class="card-title">Documentation</h3>
-                        <p class="card-description">Access system documentation, guides, and best practices for your role.</p>
-                        <div class="card-action">
-                            <span>Read Docs</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         <!-- Add Client Modal -->
         <div class="modal" id="add-client-modal">
@@ -1143,7 +1038,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="add-lead-form" action="/add-lead" method="POST"> <!-- Changed ID and Action -->
-                        
+
                         <!-- Lead Name -->
                         <div class="form-group"> <!-- Changed from form-row for single full-width field -->
                             <label for="lead-name">Lead Name <span class="required">*</span></label>
@@ -1157,7 +1052,7 @@
                          <div class="form-group">
                             <label for="lead-generator">Lead Generator <span class="required">*</span></label>
                             <div class="input-wrapper">
-                                <input type="text" id="lead-generator" name="leadgenerator" class="form-control" value="{{ username }}" required readonly> <!-- Changed IDs/Names, pre-filled, required -->
+                                <input type="text" id="lead-generator" name="leadgenerator" class="form-control" required> <!-- Changed IDs/Names, pre-filled, required -->
                                 <i class="input-icon fas fa-user-tie"></i>
                             </div>
                         </div>
@@ -1192,9 +1087,59 @@
                 </div>
             </div>
         </div>
+        <!-- Add Product Modal -->
+        <div class="modal" id="add-product-modal">
+            <div class="modal-backdrop"></div>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Add New Product</h3>
+                    <!-- Close button removed -->
+                </div>
+                <div class="modal-body">
+                    <form id="add-product-form" action="/add-product" method="POST">
+
+                        <!-- Product ID -->
+                        <div class="form-group">
+                            <label for="product-id">Product ID <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <input type="text" id="product-id" name="productid" class="form-control" required>
+                                <i class="input-icon fas fa-barcode"></i>
+                            </div>
+                        </div>
+
+                        <!-- Product Name -->
+                        <div class="form-group">
+                            <label for="product-name">Product Name <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <input type="text" id="product-name" name="productname" class="form-control" required>
+                                <i class="input-icon fas fa-tag"></i>
+                            </div>
+                        </div>
+
+                        <!-- Product Description -->
+                        <div class="form-group">
+                            <label for="product-description">Product Description</label>
+                            <div class="input-wrapper">
+                                <textarea id="product-description" name="product_description" class="form-control" rows="3"></textarea>
+                                <i class="input-icon fas fa-align-left" style="top: 25px;"></i>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary cancel-modal">Cancel</button>
+                            <button type="submit" class="btn-primary">
+                                <span>Add Product</span>
+                                <div class="loading-spinner"></div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
     </main>
-    
+
 
     <script>
         // Initialize modal functionality
@@ -1204,12 +1149,15 @@ initializeModal();
 initializeClientForm();
 // Initialize lead form validation
 initializeLeadForm();
+// Initialize product form validation
+initializeProductForm();
 
 // Modal functionality (Revised for multiple modals)
 function initializeModal() {
     const modalTriggers = [
         { cardId: 'add-client-card', modalId: 'add-client-modal' },
-        { cardId: 'add-lead-card', modalId: 'add-lead-modal' }
+        { cardId: 'add-lead-card', modalId: 'add-lead-modal' },
+        { cardId: 'add-product-card', modalId: 'add-product-modal' } // Added product modal trigger
         // Add more { cardId: '...', modalId: '...' } pairs here if needed
     ];
 
@@ -1296,19 +1244,19 @@ function initializeModal() {
 // Client form validation and submission
 function initializeClientForm() {
     const clientForm = document.getElementById('add-client-form');
-    
+
     // PAN validation (regex for Indian PAN format)
     const panInput = document.getElementById('client-pan');
     if (panInput) {
         panInput.addEventListener('input', function() {
             this.value = this.value.toUpperCase(); // Convert to uppercase
         });
-        
+
         panInput.addEventListener('blur', function() {
             validatePAN(this);
         });
     }
-    
+
     // Email validation
     const emailInput = document.getElementById('client-email');
     if (emailInput) {
@@ -1316,7 +1264,7 @@ function initializeClientForm() {
             validateEmail(this);
         });
     }
-    
+
     // Mobile validation
     const mobileInput = document.getElementById('client-mobile');
     if (mobileInput) {
@@ -1324,21 +1272,23 @@ function initializeClientForm() {
             validateMobile(this);
         });
     }
-    
+
     // Form submission
     if (clientForm) {
         clientForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             // Validate required fields
             const requiredInputs = this.querySelectorAll('[required]');
             let isValid = true;
-            
+
             requiredInputs.forEach(input => {
                 if (!input.value.trim()) {
                     markInvalid(input, 'This field is required');
                     isValid = false;
                 } else {
+                    // Clear previous valid state before specific validation
+                    clearInvalid(input);
                     // Validate based on type
                     if (input.id === 'client-pan' && !validatePAN(input)) {
                         isValid = false;
@@ -1349,17 +1299,17 @@ function initializeClientForm() {
                     }
                 }
             });
-            
+
             if (isValid) {
                 // Show loading state
                 const submitBtn = this.querySelector('button[type="submit"]');
                 const submitText = submitBtn.querySelector('span');
                 const loadingSpinner = submitBtn.querySelector('.loading-spinner');
-                
+
                 submitText.textContent = 'Adding...';
                 // loadingSpinner.classList.add('visible'); // Commented out to disable spinner
                 submitBtn.disabled = true;
-                
+
                 // Create FormData object and convert to plain JS object
                 const formData = new FormData(this);
                 const clientData = {};
@@ -1392,13 +1342,13 @@ function initializeClientForm() {
                         // Show success state
                         submitText.textContent = 'Client Added!';
                         submitBtn.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
-                        
+
                         // Close modal after delay
                         setTimeout(() => {
                             const modal = document.getElementById('add-client-modal');
                             modal.classList.remove('active');
                             document.body.style.overflow = '';
-                            
+
                             // Reset form and button
                             setTimeout(() => {
                                 clientForm.reset();
@@ -1406,7 +1356,7 @@ function initializeClientForm() {
                                 submitBtn.style.background = '';
                                 // loadingSpinner.classList.remove('visible'); // Commented out to disable spinner
                                 submitBtn.disabled = false;
-                                
+
                                 // Show notification
                                 showNotification('Client added successfully!', 'success');
                             }, 300);
@@ -1416,26 +1366,26 @@ function initializeClientForm() {
                         submitText.textContent = 'Add Client';
                         // loadingSpinner.classList.remove('visible'); // Commented out to disable spinner
                         submitBtn.disabled = false;
-                        
+
                         // Show error notification
                         showNotification(data.message || 'Error adding client', 'error');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    
+
                     // Reset button state
                     submitText.textContent = 'Add Client';
-                    loadingSpinner.classList.remove('visible');
+                    // loadingSpinner.classList.remove('visible'); // Commented out to disable spinner
                     submitBtn.disabled = false;
-                    
+
                     // Show error notification
                     showNotification('Network error occurred', 'error');
                 });
             }
         });
     }
-    
+
     // Helper validation functions
     function validatePAN(input) {
         const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
@@ -1443,22 +1393,27 @@ function initializeClientForm() {
             markInvalid(input, 'Please enter a valid PAN number (e.g., ABCDE1234F)');
             return false;
         } else {
-            clearInvalid(input);
-            return true;
+            // Only clear if it was previously invalid or is now valid and non-empty
+            if (input.value.trim() === '' || panRegex.test(input.value)) {
+                 clearInvalid(input);
+            }
+            return true; // Return true even if empty, required check handles emptiness
         }
     }
-    
+
     function validateEmail(input) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(input.value) && input.value.trim() !== '') {
             markInvalid(input, 'Please enter a valid email address');
             return false;
         } else {
-            clearInvalid(input);
+             if (input.value.trim() === '' || emailRegex.test(input.value)) {
+                 clearInvalid(input);
+            }
             return true;
         }
     }
-    
+
     function validateMobile(input) {
         // Basic validation for now - can be enhanced for country-specific formats
         const mobileRegex = /^\d{10}$/;
@@ -1466,31 +1421,10 @@ function initializeClientForm() {
             markInvalid(input, 'Please enter a valid 10-digit mobile number');
             return false;
         } else {
-            clearInvalid(input);
+             if (input.value.trim() === '' || mobileRegex.test(input.value)) {
+                 clearInvalid(input);
+            }
             return true;
-        }
-    }
-    
-    function markInvalid(input, message) {
-        input.classList.add('invalid');
-        
-        let errorMessage = input.nextElementSibling;
-        if (!errorMessage || !errorMessage.classList.contains('error-message')) {
-            errorMessage = document.createElement('div');
-            errorMessage.className = 'error-message';
-            input.parentNode.insertBefore(errorMessage, input.nextSibling);
-        }
-        
-        errorMessage.textContent = message;
-        errorMessage.classList.add('visible');
-    }
-    
-    function clearInvalid(input) {
-        input.classList.remove('invalid');
-        
-        const errorMessage = input.nextElementSibling;
-        if (errorMessage && errorMessage.classList.contains('error-message')) {
-            errorMessage.classList.remove('visible');
         }
     }
 
@@ -1505,7 +1439,7 @@ function initializeClientForm() {
                 } catch (error) {
                     console.error("Browser doesn't support showPicker() or another error occurred:", error);
                     // Fallback: maybe focus the input?
-                    // dobInput.focus(); 
+                    // dobInput.focus();
                 }
             });
         }
@@ -1516,38 +1450,35 @@ function initializeClientForm() {
 // Lead form validation and submission
 function initializeLeadForm() {
     const leadForm = document.getElementById('add-lead-form');
-    
+
     // Form submission
     if (leadForm) {
         leadForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             // Validate required fields
             const requiredInputs = this.querySelectorAll('[required]');
             let isValid = true;
-            
+
             requiredInputs.forEach(input => {
                 if (!input.value.trim()) {
-                    // Use the generic markInvalid function if needed, or just basic check
-                    console.error(`Required field ${input.name} is empty.`); // Simple console log for now
+                    markInvalid(input, 'This field is required'); // Use existing helper
                     isValid = false;
-                    // Optionally add visual feedback like markInvalid(input, 'This field is required');
                 } else {
-                    // Add any specific lead validation here if needed
-                    // clearInvalid(input); // Clear previous errors if using markInvalid
+                    clearInvalid(input); // Clear previous errors
                 }
             });
-            
+
             if (isValid) {
                 // Show loading state (assuming spinner structure is the same)
                 const submitBtn = this.querySelector('button[type="submit"]');
                 const submitText = submitBtn.querySelector('span');
                 const loadingSpinner = submitBtn.querySelector('.loading-spinner');
-                
+
                 submitText.textContent = 'Adding...';
                 // If using spinner: loadingSpinner.classList.add('visible');
                 submitBtn.disabled = true;
-                
+
                 // Create FormData object and convert to plain JS object
                 const formData = new FormData(this);
                 const leadData = {};
@@ -1578,13 +1509,13 @@ function initializeLeadForm() {
                         // Show success state
                         submitText.textContent = 'Lead Added!'; // Changed text
                         submitBtn.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
-                        
+
                         // Close modal after delay
                         setTimeout(() => {
                             const modal = document.getElementById('add-lead-modal'); // Target correct modal
                             modal.classList.remove('active');
                             document.body.style.overflow = '';
-                            
+
                             // Reset form and button
                             setTimeout(() => {
                                 leadForm.reset(); // Reset this specific form
@@ -1592,7 +1523,7 @@ function initializeLeadForm() {
                                 submitBtn.style.background = '';
                                 // If using spinner: loadingSpinner.classList.remove('visible');
                                 submitBtn.disabled = false;
-                                
+
                                 // Show notification
                                 showNotification('Lead added successfully!', 'success'); // Changed text
                             }, 300);
@@ -1602,19 +1533,19 @@ function initializeLeadForm() {
                         submitText.textContent = 'Add Lead'; // Changed text
                         // If using spinner: loadingSpinner.classList.remove('visible');
                         submitBtn.disabled = false;
-                        
+
                         // Show error notification
                         showNotification(data.message || 'Error adding lead', 'error'); // Changed text
                     }
                 })
                 .catch(error => {
                     console.error('Error adding lead:', error);
-                    
+
                     // Reset button state
                     submitText.textContent = 'Add Lead'; // Changed text
                     // If using spinner: loadingSpinner.classList.remove('visible');
                     submitBtn.disabled = false;
-                    
+
                     // Show error notification
                     showNotification('Network error occurred while adding lead', 'error'); // Changed text
                 });
@@ -1623,16 +1554,165 @@ function initializeLeadForm() {
     }
 }
 
+// Product form validation and submission
+function initializeProductForm() {
+    const productForm = document.getElementById('add-product-form');
+
+    // Form submission
+    if (productForm) {
+        productForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate required fields
+            const requiredInputs = this.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    // Basic validation: mark invalid if empty
+                    markInvalid(input, 'This field is required'); // Use existing helper
+                    isValid = false;
+                } else {
+                    clearInvalid(input); // Clear previous errors
+                }
+            });
+
+            if (isValid) {
+                // Show loading state
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const submitText = submitBtn.querySelector('span');
+                const loadingSpinner = submitBtn.querySelector('.loading-spinner');
+
+                submitText.textContent = 'Adding...';
+                // loadingSpinner.classList.add('visible'); // Optional: enable spinner
+                submitBtn.disabled = true;
+
+                // Create FormData object and convert to plain JS object
+                const formData = new FormData(this);
+                const productData = {};
+                formData.forEach((value, key) => {
+                    productData[key] = value;
+                });
+
+                // Send data to server as JSON
+                fetch('/add-product', { // Endpoint for adding product
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(productData) // Send JSON string
+                })
+                .then(response => {
+                    // Check if response is JSON before parsing
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json();
+                    } else {
+                        console.error("Received non-JSON response from server for add-product");
+                        return { success: false, message: "Server returned non-JSON response" };
+                    }
+                })
+                .then(data => {
+                    if (data.success === true) { // Expecting { success: true } from backend
+                        // Show success state
+                        submitText.textContent = 'Product Added!';
+                        submitBtn.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
+
+                        // Close modal after delay
+                        setTimeout(() => {
+                            const modal = document.getElementById('add-product-modal'); // Target correct modal
+                            modal.classList.remove('active');
+                            document.body.style.overflow = '';
+
+                            // Reset form and button
+                            setTimeout(() => {
+                                productForm.reset(); // Reset this specific form
+                                submitText.textContent = 'Add Product';
+                                submitBtn.style.background = '';
+                                // loadingSpinner.classList.remove('visible'); // Optional: disable spinner
+                                submitBtn.disabled = false;
+
+                                // Show notification
+                                showNotification('Product added successfully!', 'success');
+                            }, 300);
+                        }, 1500);
+                    } else {
+                        // Show error state
+                        submitText.textContent = 'Add Product';
+                        // loadingSpinner.classList.remove('visible'); // Optional: disable spinner
+                        submitBtn.disabled = false;
+
+                        // Show error notification
+                        showNotification(data.message || 'Error adding product', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error adding product:', error);
+
+                    // Reset button state
+                    submitText.textContent = 'Add Product';
+                    // loadingSpinner.classList.remove('visible'); // Optional: disable spinner
+                    submitBtn.disabled = false;
+
+                    // Show error notification
+                    showNotification('Network error occurred while adding product', 'error');
+                });
+            }
+        });
+    }
+}
+
+// Shared validation helpers (used by client, lead, and product forms)
+function markInvalid(input, message) {
+    input.classList.add('invalid');
+
+    let errorMessage = input.closest('.input-wrapper').nextElementSibling; // Look for sibling error message
+    if (!errorMessage || !errorMessage.classList.contains('error-message')) {
+        // If not found or not an error message, check if it's inside the form-group but after input-wrapper
+        errorMessage = input.closest('.form-group').querySelector('.error-message');
+        if (!errorMessage) {
+            // If still not found, create it within the form-group
+            errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            // Insert after the input-wrapper for better structure
+            input.closest('.input-wrapper').parentNode.insertBefore(errorMessage, input.closest('.input-wrapper').nextSibling);
+        }
+    }
+
+    errorMessage.textContent = message;
+    // Use requestAnimationFrame to ensure the class is added after potential removal in the same frame
+    requestAnimationFrame(() => {
+        errorMessage.classList.add('visible');
+    });
+}
+
+function clearInvalid(input) {
+    input.classList.remove('invalid');
+
+    // Find the associated error message more robustly
+    let errorMessage = input.closest('.input-wrapper').nextElementSibling;
+     if (!errorMessage || !errorMessage.classList.contains('error-message')) {
+        errorMessage = input.closest('.form-group').querySelector('.error-message');
+    }
+
+    if (errorMessage && errorMessage.classList.contains('error-message')) {
+        errorMessage.classList.remove('visible');
+        // Optional: Remove the error message element entirely after hiding
+        // setTimeout(() => { errorMessage.remove(); }, 300); // Match transition duration
+    }
+}
+
+
 // Notification system
 function showNotification(message, type = 'info') {
     // Create notification container if it doesn't exist
     let notificationContainer = document.querySelector('.notifications-container');
-    
+
     if (!notificationContainer) {
         notificationContainer = document.createElement('div');
         notificationContainer.className = 'notifications-container';
         document.body.appendChild(notificationContainer);
-        
+
         // Add styles for notification container
         const style = document.createElement('style');
         style.textContent = `
@@ -1646,7 +1726,7 @@ function showNotification(message, type = 'info') {
                 gap: 10px;
                 max-width: 300px;
             }
-            
+
             .notification {
                 padding: 15px;
                 border-radius: 10px;
@@ -1662,55 +1742,55 @@ function showNotification(message, type = 'info') {
                 transform: translateX(120%);
                 transition: transform 0.3s ease;
             }
-            
+
             .notification.show {
                 transform: translateX(0);
             }
-            
+
             .notification.info {
                 border-left: 4px solid #3498db;
             }
-            
+
             .notification.success {
                 border-left: 4px solid #2ecc71;
             }
-            
+
             .notification.error {
                 border-left: 4px solid #e74c3c;
             }
-            
+
             .notification-icon {
                 font-size: 1.2rem;
             }
-            
+
             .notification.info .notification-icon {
                 color: #3498db;
             }
-            
+
             .notification.success .notification-icon {
                 color: #2ecc71;
             }
-            
+
             .notification.error .notification-icon {
                 color: #e74c3c;
             }
-            
+
             .notification-content {
                 flex: 1;
             }
         `;
         document.head.appendChild(style);
     }
-    
+
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
-    
+
     // Set icon based on type
     let icon = 'info-circle';
     if (type === 'success') icon = 'check-circle';
     if (type === 'error') icon = 'exclamation-circle';
-    
+
     notification.innerHTML = `
         <div class="notification-icon">
             <i class="fas fa-${icon}"></i>
@@ -1719,19 +1799,19 @@ function showNotification(message, type = 'info') {
             ${message}
         </div>
     `;
-    
+
     // Add to container
     notificationContainer.appendChild(notification);
-    
+
     // Trigger animation
     setTimeout(() => {
         notification.classList.add('show');
     }, 10);
-    
+
     // Remove after delay
     setTimeout(() => {
         notification.classList.remove('show');
-        
+
         setTimeout(() => {
             notification.remove();
         }, 300);

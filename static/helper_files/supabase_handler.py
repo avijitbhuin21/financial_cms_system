@@ -123,3 +123,20 @@ def add_lead_to_db(lead_data):
     except Exception as e:
         print(f"Error in add_lead_to_db: {str(e)}") # Log the specific error
         return {"status": False, "message": str(e)}
+
+def add_product(product_data: Dict[str, Any]) -> Dict[str, Any]:
+    try:
+        response = insert_data("products", product_data)
+        if response: 
+            return {"status": True, "data": response}
+        else:
+            return {"status": False, "message": "Failed to add product or no data returned."}
+
+    except Exception as e:
+        print(f"Error in add_product: {str(e)}") # Log the specific error
+        return {"status": False, "message": str(e)}
+
+def get_roles_from_supabase():
+    x = [i['rolename'] for i in select_data("Roles")]
+    x.remove('ADMIN')
+    return x

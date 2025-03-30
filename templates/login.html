@@ -540,32 +540,6 @@
             opacity: 1;
         }
         
-        /* Loading animation for button */
-        @keyframes loading-rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: loading-rotation 1s ease-in-out infinite;
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .loading-spinner.visible {
-            opacity: 1;
-        }
-        
         /* Form Error Shake Animation */
         @keyframes form-shake {
             0%, 100% { transform: translateX(0); }
@@ -641,7 +615,6 @@
                 <div class="form-group">
                     <button type="submit" class="btn-primary">
                         <span>Sign In</span>
-                        <div class="loading-spinner"></div>
                         <div class="success-icon"></div>
                     </button>
                 </div>
@@ -701,21 +674,16 @@
                         <div class="input-group">
                             <select id="role" name="role" class="form-control" required>
                                 <option value="" disabled selected>Select Role</option>
-                                <option value="OPERATION / RM HEAD">OPERATION / RM HEAD</option>
-                                <option value="OPS EXECUTIVE / JUNIOR RM">OPS EXECUTIVE / JUNIOR RM</option>
+                                <!-- Options will be populated dynamically by JavaScript -->
                             </select>
-                            <!-- No floating label needed for select, but keep structure -->
                         </div>
                     </div>
                     <div class="form-group half">
                         <div class="input-group">
                             <select id="team" name="team" class="form-control" required>
                                 <option value="" disabled selected>Select Team</option>
-                                <option value="Team1">Team 1</option>
-                                <option value="Team2">Team 2</option>
-                                <option value="Team3">Team 3</option>
+                                <!-- Options will be populated dynamically by JavaScript -->
                             </select>
-                             <!-- No floating label needed for select, but keep structure -->
                         </div>
                     </div>
                 </div>
@@ -754,7 +722,98 @@
             
             // Button effects
             initButtonEffects();
+            
+            // Populate roles dropdown
+            populateRoles();
+            // Populate teams dropdown
+            populateTeams();
         });
+
+        // Function to fetch and populate roles
+        function populateRoles() {
+            const roleSelect = document.getElementById('role');
+            if (!roleSelect) {
+                console.error('Role select element not found.');
+                return;
+            }
+
+            fetch('/get-roles', {
+                method: 'POST', // Assuming POST as per your endpoint definition
+                headers: {
+                    'Content-Type': 'application/json'
+                    // Add any other necessary headers, like CSRF tokens if applicable
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success && Array.isArray(data.data)) {
+                    // Clear existing options except the placeholder
+                    roleSelect.innerHTML = '<option value="" disabled selected>Select Role</option>';
+                    
+                    data.data.forEach(role => {
+                        const option = document.createElement('option');
+                        option.value = role;
+                        option.textContent = role;
+                        roleSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('Failed to fetch roles or invalid data format:', data);
+                    // Optionally display an error message to the user
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching roles:', error);
+                // Optionally display an error message to the user
+            });
+        }
+
+        // Function to fetch and populate teams
+        function populateTeams() {
+            const teamSelect = document.getElementById('team');
+            if (!teamSelect) {
+                console.error('Team select element not found.');
+                return;
+            }
+
+            fetch('/get-teams', {
+                method: 'POST', // Assuming POST based on the roles endpoint
+                headers: {
+                    'Content-Type': 'application/json'
+                    // Add any other necessary headers, like CSRF tokens if applicable
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success && Array.isArray(data.data)) {
+                    // Clear existing options except the placeholder
+                    teamSelect.innerHTML = '<option value="" disabled selected>Select Team</option>';
+                    
+                    data.data.forEach(team => {
+                        const option = document.createElement('option');
+                        option.value = team; // Assuming the value and text are the same
+                        option.textContent = team;
+                        teamSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('Failed to fetch teams or invalid data format:', data);
+                    // Optionally display an error message to the user
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching teams:', error);
+                // Optionally display an error message to the user
+            });
+        }
 
         // Flag to prevent multiple form transitions
         let isTransitioning = false;
@@ -998,7 +1057,6 @@
                 const form = this;
                 const button = form.querySelector('.btn-primary');
                 const buttonText = button.querySelector('span');
-                const loadingSpinner = button.querySelector('.loading-spinner');
                 const successIcon = button.querySelector('.success-icon');
                 const originalText = buttonText.textContent;
                 
@@ -1031,8 +1089,6 @@
 
                 // Start loading animation
                 buttonText.textContent = form.id === 'form-login' ? 'Signing In...' : 'Creating Account...';
-                loadingSpinner.classList.add('visible');
-                button.style.paddingRight = '45px';
 
                 // Get form data
                 const formData = new FormData(form);
@@ -1058,7 +1114,6 @@
                         }
                         
                         // Show success
-                        loadingSpinner.classList.remove('visible');
                         successIcon.classList.add('visible');
                         buttonText.textContent = form.id === 'form-login' ? 'Signed In!' : 'Account Created!';
                         button.style.background = 'linear-gradient(135deg, #66BB6A, #43A047)';
@@ -1074,7 +1129,6 @@
                         }
                     } else {
                        // Show error message
-                       loadingSpinner.classList.remove('visible');
                        buttonText.textContent = originalText;
                        button.style.paddingRight = '';
 
